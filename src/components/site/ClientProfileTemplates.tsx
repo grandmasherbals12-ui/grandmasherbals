@@ -43,6 +43,12 @@ export function ClientProfileTemplates() {
               </ul>
             </div>
           </div>
+          <div className="mt-6 border-t border-amber-200 pt-6">
+            <p className="text-xs font-bold text-stone-500 uppercase tracking-widest mb-3 text-center">Branded Document Preview</p>
+            <div className="relative border rounded-xl overflow-hidden shadow-md max-w-md mx-auto aspect-[3/4] bg-white flex items-center justify-center">
+              <img src="/welcomereport.png" alt="Welcome Report Preview" className="w-full h-full object-contain" />
+            </div>
+          </div>
         </div>
       )
     },
@@ -138,6 +144,12 @@ export function ClientProfileTemplates() {
           <p className="text-sm text-stone-600 leading-relaxed">
             Reported waking with increased consistency and improved energy throughout the day.
           </p>
+          <div className="mt-6 border-t border-olive-200 pt-6">
+            <p className="text-xs font-bold text-stone-500 uppercase tracking-widest mb-3 text-center">Branded Document Preview</p>
+            <div className="relative border rounded-xl overflow-hidden shadow-md max-w-md mx-auto aspect-[3/4] bg-white flex items-center justify-center">
+              <img src="/3daysreport.png" alt="3-Day Progress Report Preview" className="w-full h-full object-contain" />
+            </div>
+          </div>
         </div>
       )
     },
@@ -169,10 +181,78 @@ export function ClientProfileTemplates() {
               <div className="font-bold text-lg">+85%</div>
             </div>
           </div>
+          <div className="mt-6 border-t border-purple-200 pt-6">
+            <p className="text-xs font-bold text-stone-500 uppercase tracking-widest mb-3 text-center">Branded Document Preview</p>
+            <div className="relative border rounded-xl overflow-hidden shadow-md max-w-md mx-auto aspect-[3/4] bg-white flex items-center justify-center">
+              <img src="/10daysreport.png" alt="10-Day Progress Report Preview" className="w-full h-full object-contain" />
+            </div>
+          </div>
         </div>
       )
     }
   ];
+
+  const handleExportPDF = (profileId: string) => {
+    const reportImageMap: Record<string, string> = {
+      torarie: "/welcomereport.png",
+      felix: "/3daysreport.png",
+      willg: "/10daysreport.png"
+    };
+
+    const imageUrl = reportImageMap[profileId];
+
+    if (imageUrl) {
+      const printWindow = window.open("", "_blank");
+      if (printWindow) {
+        printWindow.document.write(`
+          <html>
+            <head>
+              <title>Grandma's Herbals - Report Preview</title>
+              <style>
+                body {
+                  margin: 0;
+                  display: flex;
+                  flex-direction: column;
+                  align-items: center;
+                  justify-content: center;
+                  min-height: 100vh;
+                  background-color: #faf9f5;
+                  font-family: sans-serif;
+                }
+                .container {
+                  max-width: 900px;
+                  background: #fff;
+                  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+                  border-radius: 12px;
+                  padding: 20px;
+                  text-align: center;
+                }
+                img {
+                  max-width: 100%;
+                  height: auto;
+                  border-radius: 8px;
+                  border: 1px solid #ebdcb7;
+                }
+                @media print {
+                  body { background: none; }
+                  .container { box-shadow: none; padding: 0; }
+                  img { max-width: 100%; height: auto; }
+                }
+              </style>
+            </head>
+            <body>
+              <div class="container">
+                <img src="${imageUrl}" onload="window.print();" />
+              </div>
+            </body>
+          </html>
+        `);
+        printWindow.document.close();
+      }
+    } else {
+      window.print();
+    }
+  };
 
   if (activeProfile) {
     const profile = profiles.find(p => p.id === activeProfile);
@@ -188,7 +268,7 @@ export function ClientProfileTemplates() {
             <h2 className="text-3xl font-cormorant font-bold text-olive-800">{profile.name}</h2>
             <p className="text-stone-500">{profile.title}</p>
           </div>
-          <Button variant="outline" className="gap-2">
+          <Button variant="outline" className="gap-2" onClick={() => handleExportPDF(profile.id)}>
             <Download className="w-4 h-4" /> Export PDF
           </Button>
         </div>

@@ -132,21 +132,30 @@ export function VideoRecorder({ onSubmitted }: VideoRecorderProps) {
     setIsSubmitting(true);
 
     try {
-      // Upload video to Supabase Storage
-      const fileName = `${Date.now()}-${customerName.replace(/\s+/g, "-")}.webm`;
-      const { data: uploadData, error: uploadError } = await supabase.storage
-        .from("video-testimonials")
-        .upload(fileName, videoBlob, {
-          contentType: "video/webm",
-          cacheControl: "3600",
-        });
+      let finalVideoUrl = "";
 
-      if (uploadError) throw uploadError;
+      // Try to upload video to Supabase Storage
+      try {
+        const fileName = `${Date.now()}-${customerName.replace(/\s+/g, "-")}.webm`;
+        const { data: uploadData, error: uploadError } = await supabase.storage
+          .from("video-testimonials")
+          .upload(fileName, videoBlob, {
+            contentType: "video/webm",
+            cacheControl: "3600",
+          });
 
-      // Get public URL
-      const { data: { publicUrl } } = supabase.storage
-        .from("video-testimonials")
-        .getPublicUrl(fileName);
+        if (uploadError) {
+          console.warn("Video upload failed (storage bucket may not exist):", uploadError.message);
+          // Continue without video URL — submit as text-only testimonial
+        } else {
+          const { data: { publicUrl } } = supabase.storage
+            .from("video-testimonials")
+            .getPublicUrl(fileName);
+          finalVideoUrl = publicUrl;
+        }
+      } catch (storageErr) {
+        console.warn("Storage upload skipped:", storageErr);
+      }
 
       // Insert testimonial record
       const { error: insertError } = await supabase
@@ -155,11 +164,11 @@ export function VideoRecorder({ onSubmitted }: VideoRecorderProps) {
           {
             customer_name: customerName,
             customer_email: customerEmail || null,
-            video_url: publicUrl,
+            video_url: finalVideoUrl || null,
             rating,
             comment,
-            duration: Math.floor(videoBlob.size / 10000), // rough estimate
-            approved: false, // Requires admin approval
+            duration: videoBlob ? Math.floor(videoBlob.size / 10000) : 0,
+            approved: false,
           },
         ]);
 
@@ -168,9 +177,9 @@ export function VideoRecorder({ onSubmitted }: VideoRecorderProps) {
       toast.success("Thank you! Your testimonial has been submitted and is pending approval.");
       resetRecording();
       onSubmitted?.();
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error submitting testimonial:", error);
-      toast.error("Failed to submit testimonial. Please try again.");
+      toast.error(error?.message || "Failed to submit testimonial. Please try again.");
     } finally {
       setIsSubmitting(false);
     }
@@ -183,7 +192,7 @@ export function VideoRecorder({ onSubmitted }: VideoRecorderProps) {
         <video
           ref={videoRef}
           autoPlay={isRecording}
-          src={videoUrl}
+          src={videoUrl || undefined}
           controls={!!videoUrl && !isRecording}
           muted={isRecording}
           className="w-full h-full object-cover"

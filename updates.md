@@ -1,246 +1,182 @@
-mainly want to integrate the spabase and backend after the below mentioned changes and updates are done.
-1. Membership Page Text Overlapping
-Screenshot
-The first screenshot shows:
-30 minute Wellness Intake Assessment
-AI Assisted Lifestyle Survey
-Medication & Herbal Interaction Review
-overlapping each other.
-Fix
-Find the membership card component.
+1)here is my website link deployed now. https://grandmasstore.netlify.app
+2)Priority 1 — Fix Existing Bugs First
+These are items the client has already noticed.
+3)Mobile Testing
 
-2. Contact Form Submission
+Client specifically requested:
+
+adaptive for cell phone view on iphone when turned
+
+Test:
+
+Portrait
+Home
+Membership
+Checkout
+Intake
+Landscape
+Home
+Membership
+Reports
+
+Fix any overflow.
+1. Broken Email Link
+
+Client said:
+superbad.io link
+it was a broken email when i clicked link
+Check
+Search entire project for:
+superbad.io
+mailto:
+support email
+contact email
+Test
+Footer email
+Contact page email
+Consultation email
+Welcome email links
+2. Header Navigation
+
+Client said:
+need header connected
+Verify Every Header Item
+Logo → Home
+Phone icon → Call
+User icon → Login/Profile
+Cart icon → Cart
+Menu → Mobile Menu
+No dead links.
+3. Black Rock Image
 
 Client explicitly said:
-"when i fill the form completely it does not let me submit"
-Verify
-After clicking submit:
-form validates
-API called
-success message shown
-email stored
+black rock with plant picture is not resized to fit full screen yet
+Fix
+Remove card styling.
+Image should be:
+width: 100%;
+height: auto;
+display: block;
+Minimal padding.
 
-3. Purchase Flow
-Client:
-customers click consult or products or memberships they need to be able to purchase
-Verify Every CTA
-Membership
-Get Started
-↓
-Checkout
-↓
-Payment
-Consult
-Book Consultation
-↓
-Checkout
-Product
-Add To Cart
-↓
-Checkout
-No dead buttons.
-
-4. Membership Price Mismatch
-
-Client:
-prices don't match when clicked
-Audit
-Compare:
-Card Price
-Checkout Price
-Stripe Price
-All must match.
-
-5. Replace Mission Statement
-
-Current section should become:
-Grandma’s Herbals delivers Integrative Regenerative Wellness through a personalized, bespoke concierge experience tailored to support your mind, body, spirit, and overall quality of life.
-Use a dedicated block
-Layout
-OUR MISSION
-Grandma’s Herbals delivers...
-[Quote]
-Adjusting to changing paradigms strategically & methodically.
-Like the reference image- mission.png added in public folder
-
-6. Membership Tiers Update
-
-Client requested:
-
-Tier 1
-No consultation
-Online Evaluation
-Assessment Report
-
-Tier 2
-1 × 10 minute consultation
-Online Evaluation
-Assessment Report
-
-Tier 3
-3 × 10 minute consultations
-Online Evaluation
-Assessment Report
-Update:
-pricing cards
-membership page
-checkout descriptions
-
-7. Add Therapist Section
-
-Client requested:
-
-Internal Medicine
-Psychologist
-Physiotherapist
-Psychiatrist
-Create New Section
-Integrated Professional Support
-
-Grid cards.
-
-8. don't forget to resize black rock image to no border & made larger
-Black Rock Image in home starting page
-Client repeatedly mentioned this
-Current
-Small image inside card make it without border and full home page fitted.
-
-9. Mortar & Pestle Section Overlay
-
-Client supplied text.
-
+4. Overlay Text Not Showing
+Client said:
+slides text overlay not pushed yet
 Add
-Bespoke Formulated Compounds
 
+Image 1:
+Bespoke Formulated Compounds
 Rejuvenating
 mind. body. spirit. soul
 
-Overlay on image.
-Bespoke Formulated Compounds ( non static text overlay soft auto display )
-Rejuvenating 
-mind. body. spirit. soul (capsule Video)
+Image 2:
+Organic Wellness
+Grown in nature.
+Guided by Wisdom.
+Visible immediately.
+5. Compliance Pages
 
-Organic Wellness ( text over auto populate soft) 
-Grown in nature. Guided by Wisdom 
+Client specifically requested:
 
-10. Herbal Jars Section Overlay
+Create Pages
+Privacy Policy
+/privacy-policy
+Terms of Service
+/terms-of-service
+HIPAA Disclaimer
+/hipaa-disclaimer
+Medical Disclaimer
+/medical-disclaimer
+Liability Waiver
+
+Use the uploaded document as source content.- refer "beedhewder adjustGRANDMAS HERBALS LIABILITY WAIVER-1.docx" file.
+
+/liability-waiver
+6. Required Consent
+
+Client said:
+
+every person & membership sign up needs checkbox
+
+Before Checkout
 
 Add:
 
-Organic Wellness
+☐ I agree to the:
 
-Grown in nature.
-Guided by Wisdom.
+Privacy Policy
+Terms of Service
+HIPAA Disclaimer
+Medical Disclaimer
+Liability Waiver
+Button disabled until checked.
+ 
+ 7. FAQ Section
 
-Same style.
-12. Client requested:
+Client requested:
 
-slow auto scroll
+Conversion Optimization FAQ section
 
-Update
+Add 8–10 FAQs.
 
-Current:
+Examples:
 
-3000ms
+What is Concierge Wellness?
+Is this medical treatment?
+How are recommendations created?
+Can I upload progress reports?
+How often do members receive support?
+Can I book consultations?
 
-Change:
+8. Practitioner Dashboard MVP
 
-7000ms
+Do NOT build full CRM.
 
-13. Capsule Video
+Create admin area:
 
-Client:
+Clients
 
-speed up capsule video
+View clients.
 
-Use:
+Intake Forms
 
-video.playbackRate = 1.25;
+View submitted forms.
 
-14. 14. Intake Form After Purchase
+Progress Reports
 
-Flow:
+View reports.
 
-Payment
-↓
-Intake Form
-↓
-Submit
-↓
-Welcome Page
+Recommendations
 
-Fields:
+Upload notes.
 
-Name
-Age
-Goals
-Health Concerns
-Medications
-Blood Pressure
-Blood Sugar
-Notes
-15. Welcome Letter Template
+Follow Ups
 
-Use the image client sent.
+Schedule next appointment.
 
-Create:
+Simple CRUD is enough.
+9. Report Generation
 
-Welcome To Concierge Wellness Care
+Client keeps mentioning Felix/Todd reports.
 
-with dynamic fields:
+Create Button
+Generate Report
 
-Client Name
-Age
-Formula
-Date
-16. Progress Report Template
+Generate:
 
-Create page matching screenshots.
+Welcome Report
+Progress Report
 
-Metrics:
+using existing templates.
 
-Focus
-Energy
-Mood
-Mental Clarity
+No AI needed yet.
+10. PDF Export
 
-with progress bars.
+Add:
 
-17. Negative Feedback Section
+Export PDF
 
-Client explicitly requested.
+to:
 
-Add at end of reports:
-
-Any concerns, side effects, or negative experiences?
-
-Your feedback helps us improve your protocol and wellness recommendations.
-PHASE 5 — QUICK FEATURES
-18. Consultation Booking
-
-After payment:
-
-Book Consultation
-
-Use:
-
-Calendly
-or
-Google Appointment
-19. Guided Breathwork Library
-
-Create page:
-
-Breathwork Library
-
-with embedded videos.
-
-20. Chair Stretch Library
-
-Create page:
-
-Chair Stretch Series
-
-with embedded videos.
-
-21. Basic Chatbot i will use openriuter api free ai afterwards.
+Welcome Letter
+Progress Report

@@ -14,10 +14,16 @@ export function Footer() {
               rituals, and the quiet wisdom of plants.
             </p>
             <div className="flex gap-3">
-              {[Instagram, Facebook, Mail].map((Icon, i) => (
+              {[
+                { Icon: Instagram, href: "https://instagram.com" },
+                { Icon: Facebook, href: "https://facebook.com" },
+                { Icon: Mail, href: "mailto:care@grandmasherbals.com" },
+              ].map(({ Icon, href }, i) => (
                 <a
                   key={i}
-                  href="#"
+                  href={href}
+                  target={href.startsWith("http") ? "_blank" : undefined}
+                  rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
                   className="grid h-9 w-9 place-items-center rounded-full border border-olive-200 text-olive-600 transition hover:bg-olive-500 hover:text-white"
                   aria-label="Social link"
                 >
@@ -78,11 +84,18 @@ export function Footer() {
         </div>
       </div>
       <div className="border-t border-cream-200">
-        <div className="container mx-auto px-4 py-6 flex justify-between items-center text-sm text-olive-600">
+        <div className="container mx-auto px-4 py-6 flex flex-col md:flex-row justify-between items-center gap-4 text-xs sm:text-sm text-olive-600">
           <p>&copy; {new Date().getFullYear()} Grandma's Herbal Haven. All Rights Reserved.</p>
-          <div className="flex gap-4">
-            <a href="#" className="hover:text-olive-800">Privacy Policy</a>
-            <a href="#" className="hover:text-olive-800">Terms of Service</a>
+          <div className="flex flex-wrap justify-center gap-x-4 gap-y-2">
+            <Link to="/privacy-policy" className="hover:text-olive-800 transition">Privacy Policy</Link>
+            <span className="text-cream-300 hidden sm:inline">|</span>
+            <Link to="/terms-of-service" className="hover:text-olive-800 transition">Terms of Service</Link>
+            <span className="text-cream-300 hidden sm:inline">|</span>
+            <Link to="/hipaa-disclaimer" className="hover:text-olive-800 transition">HIPAA Disclaimer</Link>
+            <span className="text-cream-300 hidden sm:inline">|</span>
+            <Link to="/medical-disclaimer" className="hover:text-olive-800 transition">Medical Disclaimer</Link>
+            <span className="text-cream-300 hidden sm:inline">|</span>
+            <Link to="/liability-waiver" className="hover:text-olive-800 transition">Liability Waiver</Link>
           </div>
         </div>
       </div>

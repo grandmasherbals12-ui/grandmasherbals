@@ -71,6 +71,7 @@ function CheckoutPage() {
 
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [consentChecked, setConsentChecked] = useState(false);
 
   // Form states
   const [name, setName] = useState("");
@@ -591,11 +592,30 @@ function CheckoutPage() {
               </div>
             </dl>
 
+            <div className="pt-2 pb-4 border-t border-stone-100">
+              <label className="flex items-start gap-2.5 cursor-pointer select-none">
+                <input
+                  type="checkbox"
+                  checked={consentChecked}
+                  onChange={(e) => setConsentChecked(e.target.checked)}
+                  className="mt-1 h-4 w-4 text-olive-600 border-stone-300 rounded focus:ring-olive-500"
+                />
+                <span className="text-xs text-stone-600 leading-relaxed">
+                  I agree to the{" "}
+                  <Link to="/privacy-policy" className="text-olive-700 underline font-medium hover:text-olive-900" target="_blank">Privacy Policy</Link>,{" "}
+                  <Link to="/terms-of-service" className="text-olive-700 underline font-medium hover:text-olive-900" target="_blank">Terms of Service</Link>,{" "}
+                  <Link to="/hipaa-disclaimer" className="text-olive-700 underline font-medium hover:text-olive-900" target="_blank">HIPAA Disclaimer</Link>,{" "}
+                  <Link to="/medical-disclaimer" className="text-olive-700 underline font-medium hover:text-olive-900" target="_blank">Medical Disclaimer</Link>, and{" "}
+                  <Link to="/liability-waiver" className="text-olive-700 underline font-medium hover:text-olive-900" target="_blank">Liability Waiver</Link>.
+                </span>
+              </label>
+            </div>
+
             <Button
               type="submit"
               size="lg"
               className="w-full bg-olive-600 hover:bg-olive-700 text-white rounded-full py-6 font-semibold shadow-md transition"
-              disabled={isSubmitting}
+              disabled={isSubmitting || !consentChecked}
             >
               {isSubmitting
                 ? "Processing..."

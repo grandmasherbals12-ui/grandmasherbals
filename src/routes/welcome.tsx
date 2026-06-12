@@ -1,8 +1,10 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { supabase } from "@/lib/supabase";
 import { useAuth } from "@/lib/auth-context";
+import { Button } from "@/components/ui/button";
+import { Printer } from "lucide-react";
 
 export const Route = createFileRoute("/welcome")({
   head: () => ({
@@ -43,6 +45,21 @@ function WelcomePage() {
     <SiteLayout>
       <section className="bg-gradient-to-b from-stone-50 via-white to-olive-50/40 py-16">
         <div className="container mx-auto px-4">
+          <div className="max-w-5xl mx-auto flex justify-between items-center flex-wrap gap-4 mb-6 print:hidden">
+            <Link
+              to="/account"
+              className="text-sm font-semibold text-olive-700 hover:text-olive-900 transition"
+            >
+              ← Back to Journal
+            </Link>
+            <Button
+              onClick={() => window.print()}
+              className="bg-olive-600 hover:bg-olive-700 text-white rounded-full px-5 py-2 text-xs font-semibold gap-1.5 shadow-md transition-all duration-200 hover:-translate-y-0.5"
+            >
+              <Printer className="h-4 w-4" /> Export PDF / Print Welcome Letter
+            </Button>
+          </div>
+
           <div className="mx-auto max-w-5xl rounded-[2rem] border border-amber-200 bg-[#faf8f2] p-6 shadow-[0_20px_70px_rgba(73,88,52,0.10)] md:p-10">
             <div className="text-center">
               <p className="text-xs font-bold uppercase tracking-[0.35em] text-olive-500">Welcome To</p>

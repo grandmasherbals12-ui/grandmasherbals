@@ -45,10 +45,10 @@ export function Header() {
             </Link>
           ))}
         </nav>
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-1.5 sm:gap-4 shrink-0">
           <a
             href="tel:+10000000000"
-            className="flex items-center gap-2 bg-olive-600 text-white px-3 py-2 md:px-4 md:py-2 rounded-full hover:bg-olive-700 transition"
+            className="hidden sm:flex items-center gap-2 bg-olive-600 text-white px-3 py-2 md:px-4 md:py-2 rounded-full hover:bg-olive-700 transition shrink-0"
           >
             <Phone className="h-4 w-4" />
             <span className="text-sm font-semibold hidden md:inline">Call Us</span>
@@ -56,14 +56,14 @@ export function Header() {
           <Link
             to="/account"
             aria-label="Account"
-            className="p-2 text-olive-600 hover:text-olive-800"
+            className="p-1.5 sm:p-2 text-olive-600 hover:text-olive-800 shrink-0"
           >
             <User className="h-5 w-5" />
           </Link>
           <Link
             to="/cart"
             aria-label="Cart"
-            className="relative p-2 text-olive-600 hover:text-olive-800"
+            className="relative p-1.5 sm:p-2 text-olive-600 hover:text-olive-800 shrink-0"
           >
             <ShoppingBag className="h-5 w-5" />
             {itemCount > 0 && (
@@ -75,7 +75,7 @@ export function Header() {
           <button
             aria-label="Menu"
             onClick={() => setOpen((v) => !v)}
-            className="md:hidden p-2 text-olive-600 hover:text-olive-800"
+            className="md:hidden p-1.5 sm:p-2 text-olive-600 hover:text-olive-800 shrink-0"
           >
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>

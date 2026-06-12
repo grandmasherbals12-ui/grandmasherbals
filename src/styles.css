@@ -114,3 +114,18 @@ body {
 .container {
   @apply max-w-7xl mx-auto;
 }
+
+@media print {
+  header, footer, nav, button, .print\:hidden, [role="button"], a[href^="tel:"], .sticky, .fixed, .aside, aside {
+    display: none !important;
+  }
+  body, .container, main, section, .page, .letter-card {
+    background: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+    color: #000 !important;
+    max-width: 100% !important;
+  }
+}

@@ -32,17 +32,25 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         data: { session },
       } = await supabase.auth.getSession();
       if (session?.user) {
-        const { data } = await supabase
-          .from("users")
-          .select("*")
-          .eq("id", session.user.id)
-          .single();
-        setUser({
-          id: session.user.id,
-          email: session.user.email || "",
-          fullName: data?.full_name,
-          avatar: data?.avatar_url,
-        });
+        try {
+          const { data } = await supabase
+            .from("users")
+            .select("*")
+            .eq("id", session.user.id)
+            .maybeSingle();
+          setUser({
+            id: session.user.id,
+            email: session.user.email || "",
+            fullName: data?.full_name,
+            avatar: data?.avatar_url,
+          });
+        } catch {
+          // Profile row may not exist yet — set basic user info
+          setUser({
+            id: session.user.id,
+            email: session.user.email || "",
+          });
+        }
       }
       setLoading(false);
     };
@@ -54,17 +62,24 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (session?.user) {
-        const { data } = await supabase
-          .from("users")
-          .select("*")
-          .eq("id", session.user.id)
-          .single();
-        setUser({
-          id: session.user.id,
-          email: session.user.email || "",
-          fullName: data?.full_name,
-          avatar: data?.avatar_url,
-        });
+        try {
+          const { data } = await supabase
+            .from("users")
+            .select("*")
+            .eq("id", session.user.id)
+            .maybeSingle();
+          setUser({
+            id: session.user.id,
+            email: session.user.email || "",
+            fullName: data?.full_name,
+            avatar: data?.avatar_url,
+          });
+        } catch {
+          setUser({
+            id: session.user.id,
+            email: session.user.email || "",
+          });
+        }
       } else {
         setUser(null);
       }
@@ -110,7 +125,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         .from("users")
         .select("*")
         .eq("id", data.user.id)
-        .single();
+        .maybeSingle();
 
       setUser({
         id: data.user.id,

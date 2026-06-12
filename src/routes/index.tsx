@@ -5,6 +5,7 @@ import { FeaturedProducts } from "@/components/site/FeaturedProducts";
 import { Testimonials } from "@/components/site/Testimonials";
 import { About } from "@/components/site/About";
 import { Social } from "@/components/site/Social";
+import { FAQSection } from "@/components/site/FAQSection";
 
 export const Route = createFileRoute("/")({
   component: Index,
@@ -17,6 +18,14 @@ function Index() {
       <FeaturedProducts />
       <Testimonials />
       <About />
+      <FAQSection />
+      <div className="w-full p-0 m-0 overflow-hidden">
+        <img
+          src="/yogaplant.jpeg"
+          alt="Grandma's Herbals Botanical Scene"
+          className="w-full h-auto block"
+        />
+      </div>
       <Social />
     </SiteLayout>
   );

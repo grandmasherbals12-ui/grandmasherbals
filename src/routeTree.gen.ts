@@ -9,35 +9,50 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WelcomeRouteImport } from './routes/welcome'
 import { Route as TestimonialsRouteImport } from './routes/testimonials'
+import { Route as TermsOfServiceRouteImport } from './routes/terms-of-service'
 import { Route as TechnologyRouteImport } from './routes/technology'
 import { Route as StoriesRouteImport } from './routes/stories'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ShopRouteImport } from './routes/shop'
 import { Route as ProgressReportRouteImport } from './routes/progress-report'
+import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
 import { Route as MembershipRouteImport } from './routes/membership'
+import { Route as MedicalDisclaimerRouteImport } from './routes/medical-disclaimer'
+import { Route as LiabilityWaiverRouteImport } from './routes/liability-waiver'
+import { Route as IntakeRouteImport } from './routes/intake'
+import { Route as HipaaDisclaimerRouteImport } from './routes/hipaa-disclaimer'
 import { Route as ConsultationRouteImport } from './routes/consultation'
 import { Route as CheckoutRouteImport } from './routes/checkout'
+import { Route as ChatbotRouteImport } from './routes/chatbot'
+import { Route as ChairStretchRouteImport } from './routes/chair-stretch'
 import { Route as CartRouteImport } from './routes/cart'
+import { Route as BreathworkRouteImport } from './routes/breathwork'
 import { Route as AssessmentRouteImport } from './routes/assessment'
 import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AccountRouteImport } from './routes/account'
 import { Route as AboutRouteImport } from './routes/about'
-import { Route as BreathworkRouteImport } from './routes/breathwork'
-import { Route as ChairStretchRouteImport } from './routes/chair-stretch'
-import { Route as ChatbotRouteImport } from './routes/chatbot'
-import { Route as IntakeRouteImport } from './routes/intake'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ShopNotTodayRouteImport } from './routes/shop.not-today'
 import { Route as ShopHerbalIvRouteImport } from './routes/shop.herbal-iv'
 import { Route as ShopAdultEnhancementRouteImport } from './routes/shop.adult-enhancement'
 import { Route as ShopProductIdRouteImport } from './routes/shop.$productId'
 import { Route as ProgressReportReportIdRouteImport } from './routes/progress-report.$reportId'
-import { Route as WelcomeRouteImport } from './routes/welcome'
 
+const WelcomeRoute = WelcomeRouteImport.update({
+  id: '/welcome',
+  path: '/welcome',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const TestimonialsRoute = TestimonialsRouteImport.update({
   id: '/testimonials',
   path: '/testimonials',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsOfServiceRoute = TermsOfServiceRouteImport.update({
+  id: '/terms-of-service',
+  path: '/terms-of-service',
   getParentRoute: () => rootRouteImport,
 } as any)
 const TechnologyRoute = TechnologyRouteImport.update({
@@ -65,9 +80,34 @@ const ProgressReportRoute = ProgressReportRouteImport.update({
   path: '/progress-report',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
+  id: '/privacy-policy',
+  path: '/privacy-policy',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const MembershipRoute = MembershipRouteImport.update({
   id: '/membership',
   path: '/membership',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MedicalDisclaimerRoute = MedicalDisclaimerRouteImport.update({
+  id: '/medical-disclaimer',
+  path: '/medical-disclaimer',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LiabilityWaiverRoute = LiabilityWaiverRouteImport.update({
+  id: '/liability-waiver',
+  path: '/liability-waiver',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const IntakeRoute = IntakeRouteImport.update({
+  id: '/intake',
+  path: '/intake',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const HipaaDisclaimerRoute = HipaaDisclaimerRouteImport.update({
+  id: '/hipaa-disclaimer',
+  path: '/hipaa-disclaimer',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ConsultationRoute = ConsultationRouteImport.update({
@@ -80,9 +120,24 @@ const CheckoutRoute = CheckoutRouteImport.update({
   path: '/checkout',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ChatbotRoute = ChatbotRouteImport.update({
+  id: '/chatbot',
+  path: '/chatbot',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ChairStretchRoute = ChairStretchRouteImport.update({
+  id: '/chair-stretch',
+  path: '/chair-stretch',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CartRoute = CartRouteImport.update({
   id: '/cart',
   path: '/cart',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BreathworkRoute = BreathworkRouteImport.update({
+  id: '/breathwork',
+  path: '/breathwork',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AssessmentRoute = AssessmentRouteImport.update({
@@ -103,26 +158,6 @@ const AccountRoute = AccountRouteImport.update({
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const BreathworkRoute = BreathworkRouteImport.update({
-  id: '/breathwork',
-  path: '/breathwork',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ChairStretchRoute = ChairStretchRouteImport.update({
-  id: '/chair-stretch',
-  path: '/chair-stretch',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ChatbotRoute = ChatbotRouteImport.update({
-  id: '/chatbot',
-  path: '/chatbot',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const IntakeRoute = IntakeRouteImport.update({
-  id: '/intake',
-  path: '/intake',
   getParentRoute: () => rootRouteImport,
 } as any)
 const IndexRoute = IndexRouteImport.update({
@@ -155,32 +190,33 @@ const ProgressReportReportIdRoute = ProgressReportReportIdRouteImport.update({
   path: '/$reportId',
   getParentRoute: () => ProgressReportRoute,
 } as any)
-const WelcomeRoute = WelcomeRouteImport.update({
-  id: '/welcome',
-  path: '/welcome',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/breathwork': typeof BreathworkRoute
   '/account': typeof AccountRoute
-  '/chair-stretch': typeof ChairStretchRoute
-  '/chatbot': typeof ChatbotRoute
-  '/intake': typeof IntakeRoute
   '/admin': typeof AdminRoute
   '/assessment': typeof AssessmentRoute
+  '/breathwork': typeof BreathworkRoute
   '/cart': typeof CartRoute
+  '/chair-stretch': typeof ChairStretchRoute
+  '/chatbot': typeof ChatbotRoute
   '/checkout': typeof CheckoutRoute
   '/consultation': typeof ConsultationRoute
+  '/hipaa-disclaimer': typeof HipaaDisclaimerRoute
+  '/intake': typeof IntakeRoute
+  '/liability-waiver': typeof LiabilityWaiverRoute
+  '/medical-disclaimer': typeof MedicalDisclaimerRoute
   '/membership': typeof MembershipRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
   '/progress-report': typeof ProgressReportRouteWithChildren
   '/shop': typeof ShopRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/stories': typeof StoriesRoute
   '/technology': typeof TechnologyRoute
+  '/terms-of-service': typeof TermsOfServiceRoute
   '/testimonials': typeof TestimonialsRoute
+  '/welcome': typeof WelcomeRoute
   '/progress-report/$reportId': typeof ProgressReportReportIdRoute
   '/shop/$productId': typeof ShopProductIdRoute
   '/shop/adult-enhancement': typeof ShopAdultEnhancementRoute
@@ -190,23 +226,29 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/breathwork': typeof BreathworkRoute
   '/account': typeof AccountRoute
-  '/chair-stretch': typeof ChairStretchRoute
-  '/chatbot': typeof ChatbotRoute
-  '/intake': typeof IntakeRoute
   '/admin': typeof AdminRoute
   '/assessment': typeof AssessmentRoute
+  '/breathwork': typeof BreathworkRoute
   '/cart': typeof CartRoute
+  '/chair-stretch': typeof ChairStretchRoute
+  '/chatbot': typeof ChatbotRoute
   '/checkout': typeof CheckoutRoute
   '/consultation': typeof ConsultationRoute
+  '/hipaa-disclaimer': typeof HipaaDisclaimerRoute
+  '/intake': typeof IntakeRoute
+  '/liability-waiver': typeof LiabilityWaiverRoute
+  '/medical-disclaimer': typeof MedicalDisclaimerRoute
   '/membership': typeof MembershipRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
   '/progress-report': typeof ProgressReportRouteWithChildren
   '/shop': typeof ShopRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/stories': typeof StoriesRoute
   '/technology': typeof TechnologyRoute
+  '/terms-of-service': typeof TermsOfServiceRoute
   '/testimonials': typeof TestimonialsRoute
+  '/welcome': typeof WelcomeRoute
   '/progress-report/$reportId': typeof ProgressReportReportIdRoute
   '/shop/$productId': typeof ShopProductIdRoute
   '/shop/adult-enhancement': typeof ShopAdultEnhancementRoute
@@ -217,23 +259,29 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
-  '/breathwork': typeof BreathworkRoute
   '/account': typeof AccountRoute
-  '/chair-stretch': typeof ChairStretchRoute
-  '/chatbot': typeof ChatbotRoute
-  '/intake': typeof IntakeRoute
   '/admin': typeof AdminRoute
   '/assessment': typeof AssessmentRoute
+  '/breathwork': typeof BreathworkRoute
   '/cart': typeof CartRoute
+  '/chair-stretch': typeof ChairStretchRoute
+  '/chatbot': typeof ChatbotRoute
   '/checkout': typeof CheckoutRoute
   '/consultation': typeof ConsultationRoute
+  '/hipaa-disclaimer': typeof HipaaDisclaimerRoute
+  '/intake': typeof IntakeRoute
+  '/liability-waiver': typeof LiabilityWaiverRoute
+  '/medical-disclaimer': typeof MedicalDisclaimerRoute
   '/membership': typeof MembershipRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
   '/progress-report': typeof ProgressReportRouteWithChildren
   '/shop': typeof ShopRouteWithChildren
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/stories': typeof StoriesRoute
   '/technology': typeof TechnologyRoute
+  '/terms-of-service': typeof TermsOfServiceRoute
   '/testimonials': typeof TestimonialsRoute
+  '/welcome': typeof WelcomeRoute
   '/progress-report/$reportId': typeof ProgressReportReportIdRoute
   '/shop/$productId': typeof ShopProductIdRoute
   '/shop/adult-enhancement': typeof ShopAdultEnhancementRoute
@@ -245,23 +293,29 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
-    | '/breathwork'
     | '/account'
-    | '/chair-stretch'
-    | '/chatbot'
-    | '/intake'
     | '/admin'
     | '/assessment'
+    | '/breathwork'
     | '/cart'
+    | '/chair-stretch'
+    | '/chatbot'
     | '/checkout'
     | '/consultation'
+    | '/hipaa-disclaimer'
+    | '/intake'
+    | '/liability-waiver'
+    | '/medical-disclaimer'
     | '/membership'
+    | '/privacy-policy'
     | '/progress-report'
     | '/shop'
     | '/sitemap.xml'
     | '/stories'
     | '/technology'
+    | '/terms-of-service'
     | '/testimonials'
+    | '/welcome'
     | '/progress-report/$reportId'
     | '/shop/$productId'
     | '/shop/adult-enhancement'
@@ -271,23 +325,29 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
-    | '/breathwork'
     | '/account'
-    | '/chair-stretch'
-    | '/chatbot'
-    | '/intake'
     | '/admin'
     | '/assessment'
+    | '/breathwork'
     | '/cart'
+    | '/chair-stretch'
+    | '/chatbot'
     | '/checkout'
     | '/consultation'
+    | '/hipaa-disclaimer'
+    | '/intake'
+    | '/liability-waiver'
+    | '/medical-disclaimer'
     | '/membership'
+    | '/privacy-policy'
     | '/progress-report'
     | '/shop'
     | '/sitemap.xml'
     | '/stories'
     | '/technology'
+    | '/terms-of-service'
     | '/testimonials'
+    | '/welcome'
     | '/progress-report/$reportId'
     | '/shop/$productId'
     | '/shop/adult-enhancement'
@@ -297,23 +357,29 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/about'
-    | '/breathwork'
     | '/account'
-    | '/chair-stretch'
-    | '/chatbot'
-    | '/intake'
     | '/admin'
     | '/assessment'
+    | '/breathwork'
     | '/cart'
+    | '/chair-stretch'
+    | '/chatbot'
     | '/checkout'
     | '/consultation'
+    | '/hipaa-disclaimer'
+    | '/intake'
+    | '/liability-waiver'
+    | '/medical-disclaimer'
     | '/membership'
+    | '/privacy-policy'
     | '/progress-report'
     | '/shop'
     | '/sitemap.xml'
     | '/stories'
     | '/technology'
+    | '/terms-of-service'
     | '/testimonials'
+    | '/welcome'
     | '/progress-report/$reportId'
     | '/shop/$productId'
     | '/shop/adult-enhancement'
@@ -324,32 +390,52 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
-  BreathworkRoute: typeof BreathworkRoute
   AccountRoute: typeof AccountRoute
-  ChairStretchRoute: typeof ChairStretchRoute
-  ChatbotRoute: typeof ChatbotRoute
-  IntakeRoute: typeof IntakeRoute
   AdminRoute: typeof AdminRoute
   AssessmentRoute: typeof AssessmentRoute
+  BreathworkRoute: typeof BreathworkRoute
   CartRoute: typeof CartRoute
+  ChairStretchRoute: typeof ChairStretchRoute
+  ChatbotRoute: typeof ChatbotRoute
   CheckoutRoute: typeof CheckoutRoute
   ConsultationRoute: typeof ConsultationRoute
+  HipaaDisclaimerRoute: typeof HipaaDisclaimerRoute
+  IntakeRoute: typeof IntakeRoute
+  LiabilityWaiverRoute: typeof LiabilityWaiverRoute
+  MedicalDisclaimerRoute: typeof MedicalDisclaimerRoute
   MembershipRoute: typeof MembershipRoute
+  PrivacyPolicyRoute: typeof PrivacyPolicyRoute
   ProgressReportRoute: typeof ProgressReportRouteWithChildren
   ShopRoute: typeof ShopRouteWithChildren
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   StoriesRoute: typeof StoriesRoute
   TechnologyRoute: typeof TechnologyRoute
+  TermsOfServiceRoute: typeof TermsOfServiceRoute
   TestimonialsRoute: typeof TestimonialsRoute
+  WelcomeRoute: typeof WelcomeRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/welcome': {
+      id: '/welcome'
+      path: '/welcome'
+      fullPath: '/welcome'
+      preLoaderRoute: typeof WelcomeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/testimonials': {
       id: '/testimonials'
       path: '/testimonials'
       fullPath: '/testimonials'
       preLoaderRoute: typeof TestimonialsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms-of-service': {
+      id: '/terms-of-service'
+      path: '/terms-of-service'
+      fullPath: '/terms-of-service'
+      preLoaderRoute: typeof TermsOfServiceRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/technology': {
@@ -387,11 +473,46 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProgressReportRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/privacy-policy': {
+      id: '/privacy-policy'
+      path: '/privacy-policy'
+      fullPath: '/privacy-policy'
+      preLoaderRoute: typeof PrivacyPolicyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/membership': {
       id: '/membership'
       path: '/membership'
       fullPath: '/membership'
       preLoaderRoute: typeof MembershipRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/medical-disclaimer': {
+      id: '/medical-disclaimer'
+      path: '/medical-disclaimer'
+      fullPath: '/medical-disclaimer'
+      preLoaderRoute: typeof MedicalDisclaimerRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/liability-waiver': {
+      id: '/liability-waiver'
+      path: '/liability-waiver'
+      fullPath: '/liability-waiver'
+      preLoaderRoute: typeof LiabilityWaiverRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/intake': {
+      id: '/intake'
+      path: '/intake'
+      fullPath: '/intake'
+      preLoaderRoute: typeof IntakeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/hipaa-disclaimer': {
+      id: '/hipaa-disclaimer'
+      path: '/hipaa-disclaimer'
+      fullPath: '/hipaa-disclaimer'
+      preLoaderRoute: typeof HipaaDisclaimerRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/consultation': {
@@ -408,11 +529,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CheckoutRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/chatbot': {
+      id: '/chatbot'
+      path: '/chatbot'
+      fullPath: '/chatbot'
+      preLoaderRoute: typeof ChatbotRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/chair-stretch': {
+      id: '/chair-stretch'
+      path: '/chair-stretch'
+      fullPath: '/chair-stretch'
+      preLoaderRoute: typeof ChairStretchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/cart': {
       id: '/cart'
       path: '/cart'
       fullPath: '/cart'
       preLoaderRoute: typeof CartRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/breathwork': {
+      id: '/breathwork'
+      path: '/breathwork'
+      fullPath: '/breathwork'
+      preLoaderRoute: typeof BreathworkRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/assessment': {
@@ -441,34 +583,6 @@ declare module '@tanstack/react-router' {
       path: '/about'
       fullPath: '/about'
       preLoaderRoute: typeof AboutRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/breathwork': {
-      id: '/breathwork'
-      path: '/breathwork'
-      fullPath: '/breathwork'
-      preLoaderRoute: typeof BreathworkRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/chair-stretch': {
-      id: '/chair-stretch'
-      path: '/chair-stretch'
-      fullPath: '/chair-stretch'
-      preLoaderRoute: typeof ChairStretchRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/chatbot': {
-      id: '/chatbot'
-      path: '/chatbot'
-      fullPath: '/chatbot'
-      preLoaderRoute: typeof ChatbotRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/intake': {
-      id: '/intake'
-      path: '/intake'
-      fullPath: '/intake'
-      preLoaderRoute: typeof IntakeRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/': {
@@ -513,13 +627,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ProgressReportReportIdRouteImport
       parentRoute: typeof ProgressReportRoute
     }
-    '/welcome': {
-      id: '/welcome'
-      path: '/welcome'
-      fullPath: '/welcome'
-      preLoaderRoute: typeof WelcomeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
@@ -554,24 +661,29 @@ const ShopRouteWithChildren = ShopRoute._addFileChildren(ShopRouteChildren)
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
-  BreathworkRoute: BreathworkRoute,
   AccountRoute: AccountRoute,
+  AdminRoute: AdminRoute,
+  AssessmentRoute: AssessmentRoute,
+  BreathworkRoute: BreathworkRoute,
+  CartRoute: CartRoute,
   ChairStretchRoute: ChairStretchRoute,
   ChatbotRoute: ChatbotRoute,
-  IntakeRoute: IntakeRoute,
-  AdminRoute: AdminRoute,
-  WelcomeRoute: WelcomeRoute,
-  AssessmentRoute: AssessmentRoute,
-  CartRoute: CartRoute,
   CheckoutRoute: CheckoutRoute,
   ConsultationRoute: ConsultationRoute,
+  HipaaDisclaimerRoute: HipaaDisclaimerRoute,
+  IntakeRoute: IntakeRoute,
+  LiabilityWaiverRoute: LiabilityWaiverRoute,
+  MedicalDisclaimerRoute: MedicalDisclaimerRoute,
   MembershipRoute: MembershipRoute,
+  PrivacyPolicyRoute: PrivacyPolicyRoute,
   ProgressReportRoute: ProgressReportRouteWithChildren,
   ShopRoute: ShopRouteWithChildren,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   StoriesRoute: StoriesRoute,
   TechnologyRoute: TechnologyRoute,
+  TermsOfServiceRoute: TermsOfServiceRoute,
   TestimonialsRoute: TestimonialsRoute,
+  WelcomeRoute: WelcomeRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

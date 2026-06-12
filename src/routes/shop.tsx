@@ -1,4 +1,5 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import type { ShowcaseSection } from "@/lib/shop-content";
 import { useMemo, useState } from "react";
 import { Search, SlidersHorizontal } from "lucide-react";
 import { SiteLayout } from "@/components/site/SiteLayout";
@@ -99,8 +100,7 @@ function Shop() {
     return [];
   }, [browse, restOfStore]);
 
-  const merchandiseSection = {
-    key: "merchandise",
+  const merchandiseSection: Omit<ShowcaseSection, "key"> = {
     eyebrow: "Merchandise For Sale",
     title: "Grandma's Herbals Merchandise",
     subtitle: "Branded essentials for the shop.",
@@ -109,6 +109,12 @@ function Shop() {
     images: merchandiseImages,
     ctaHref: "/shop",
     ctaLabel: "Explore shop",
+  };
+
+  // Helper to render a ShowcaseSection without spreading `key` into JSX
+  const renderShowcase = (section: ShowcaseSection) => {
+    const { key, ...rest } = section;
+    return <CollectionShowcase key={key} {...rest} />;
   };
 
   return (
@@ -202,11 +208,11 @@ function Shop() {
           </div>
         ) : cat === "All" ? (
           <>
-            <CollectionShowcase {...herbalIvSection} />
-            <CollectionShowcase {...tropicalReviveSection} />
-            <CollectionShowcase {...berryBalanceSection} />
-            <CollectionShowcase {...citrusRestoreSection} />
-            <CollectionShowcase {...dailyHydrateSection} />
+            {renderShowcase(herbalIvSection)}
+            {renderShowcase(tropicalReviveSection)}
+            {renderShowcase(berryBalanceSection)}
+            {renderShowcase(citrusRestoreSection)}
+            {renderShowcase(dailyHydrateSection)}
 
             <div className="mb-16">
               <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
@@ -274,8 +280,8 @@ function Shop() {
             </div>
 
             {/* Adult Enhancement — shown last */}
-            <CollectionShowcase {...boomMaxSection} />
-            <CollectionShowcase {...peachFlowSection} />
+            {renderShowcase(boomMaxSection)}
+            {renderShowcase(peachFlowSection)}
           </>
         ) : (
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">

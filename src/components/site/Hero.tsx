@@ -19,9 +19,9 @@ const slides = [
     media: "/carousel-1.png",
     alt: "Wellness botanical scene",
     eyebrow: "Integrative Wellness",
-    title: "Rooted in Ancient Wisdom. Cultivated for Well-Being.",
-    subtitle: "A Heritage of Botanical Wisdom. A Future of Integrative Wellness.",
-    description: "Long before wellness became an industry, it was a way of life. True wellness is not merely the absence of discomfort—it is the harmonious relationship between mind, body, spirit, family, community, and the natural world.",
+    title: "Bespoke Formulated Compounds",
+    subtitle: "Rejuvenating",
+    description: "mind. body. spirit. soul",
     features: ["Integrative Wellness", "Regenerative Living", "Natural & Organic", "Wholistic Well-Being"],
     primaryCta: { label: "Begin Your Wellness Journey", to: "/assessment" },
     secondaryCta: { label: "Discover Our Story", to: "/about" },
@@ -33,9 +33,9 @@ const slides = [
     media: "/carousel-2.png",
     alt: "Herbal lifestyle scene",
     eyebrow: "Integrative Wellness",
-    title: "Wellness Designed Around You",
-    subtitle: "Personalized guidance for sustainable support.",
-    description: "Every person is unique. Our integrative approach considers nutrition, lifestyle, movement, stress, sleep, mindfulness, and botanical support to help you achieve sustainable wellness.",
+    title: "Organic Wellness",
+    subtitle: "Grown in nature.",
+    description: "Guided by Wisdom.",
     features: ["Personalized Recommendations", "Lifestyle Support", "Herbal Guidance", "Smart Wellness Support"],
     primaryCta: { label: "Explore Consultations", to: "/consultation" },
     icon: HeartPulse,
@@ -177,14 +177,15 @@ export function Hero() {
           <CarouselContent className="m-0">
             {slides.map((slide, index) => (
               <CarouselItem key={slide.id} className="p-0">
-                <div className="relative flex flex-col w-full overflow-hidden bg-cream-100">
-                  <div className="relative h-[320px] sm:h-[480px] w-full overflow-hidden bg-stone-900/10">
+                <div className="relative w-full h-[560px] sm:h-[640px] md:h-[680px] lg:h-[720px] overflow-hidden bg-stone-950">
+                  {/* Media (Image or Video) */}
+                  <div className="absolute inset-0 h-full w-full">
                     {slide.type === "video" ? (
                       <video
                         ref={(el) => {
                           videoRefs.current[index] = el;
                         }}
-                        className="absolute inset-0 h-full w-full object-cover"
+                        className="h-full w-full object-cover"
                         muted
                         playsInline
                         preload="metadata"
@@ -196,75 +197,77 @@ export function Hero() {
                       <img
                         src={slide.media}
                         alt={slide.alt}
-                        className="absolute inset-0 h-full w-full object-cover"
+                        className="h-full w-full object-cover"
                         onError={(event) => {
                           event.currentTarget.style.display = "none";
                         }}
                       />
                     )}
                   </div>
+
+                  {/* Premium Dark Gradient Overlay */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-stone-950/80 via-stone-900/40 to-transparent z-10" />
                   
-                  <div className="relative w-full flex justify-center px-4 sm:px-6 md:px-12 lg:px-24 py-8 md:py-12 z-20">
+                  {/* Overlay Content */}
+                  <div className="absolute inset-0 z-20 flex items-end justify-center px-3 sm:px-6 md:px-12 lg:px-24 py-6 sm:py-14">
                     <motion.div
                       initial={{ opacity: 0, y: 30 }}
                       animate={index === current ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
                       transition={{ duration: 0.65, ease: "easeOut" }}
-                      className="w-full max-w-4xl bg-white border border-stone-200/50 shadow-xl rounded-3xl p-6 sm:p-8 md:p-10"
+                      className="w-full max-w-4xl bg-stone-950/45 backdrop-blur-md border border-white/10 shadow-2xl rounded-3xl p-4 sm:p-8 md:p-10 text-white"
                     >
-                      <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-olive-200/70 bg-stone-50 px-3 py-1 text-xs font-semibold uppercase tracking-[0.25em] text-olive-700 shadow-sm">
-                        <slide.icon className="h-4 w-4" />
+                      <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[9px] sm:text-xs font-semibold uppercase tracking-[0.25em] text-white shadow-sm">
+                        <slide.icon className="h-3.5 w-3.5" />
                         <span>{slide.eyebrow}</span>
                       </div>
 
-                      <h1 className="max-w-2xl text-3xl font-cormorant font-bold tracking-tight text-olive-950 sm:text-4xl md:text-5xl lg:text-6xl leading-[1.1]">
+                      <h1 className="max-w-2xl text-xl sm:text-4xl md:text-5xl lg:text-6xl font-cormorant font-bold tracking-tight text-white leading-[1.15]">
                         {slide.title}
                       </h1>
 
-                      <p className="mt-3 max-w-xl text-xs sm:text-sm font-semibold uppercase tracking-[0.2em] text-olive-700/80">
+                      <p className="mt-2 max-w-xl text-[9px] sm:text-xs font-semibold uppercase tracking-[0.2em] text-amber-200/90">
                         {slide.subtitle}
                       </p>
 
-                      <p className="mt-4 max-w-2xl text-sm leading-relaxed text-stone-700">
+                      <p className="mt-3 max-w-2xl text-xs sm:text-sm leading-relaxed text-stone-200 hidden sm:block">
                         {slide.description}
                       </p>
 
-                      {/* Numbered Feature Cards (White Cards) */}
-                      <div className="mt-6 rounded-[1.6rem] border border-stone-100 bg-stone-50/50 p-4 shadow-sm">
-                        <p className="text-[0.62rem] font-bold uppercase tracking-[0.35em] text-olive-700">
+                      {/* Numbered Feature Cards (Glassmorphic Cards) */}
+                      <div className="mt-3 sm:mt-5 rounded-2xl border border-white/10 bg-white/5 p-3 sm:p-4 shadow-inner">
+                        <p className="text-[9px] font-bold uppercase tracking-[0.35em] text-amber-300">
                           Guided by heritage
                         </p>
-                        <div className="mt-3 grid gap-3 grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
+                        <div className="mt-2 grid gap-2 grid-cols-2 md:grid-cols-4">
                           {slide.features.slice(0, 4).map((feature, featureIndex) => (
                             <div
                               key={feature}
-                              className="flex items-center gap-3 rounded-2xl border border-stone-200/50 bg-white px-3 py-2.5 shadow-sm"
+                              className="flex items-center gap-2 rounded-xl border border-white/5 bg-white/10 px-2.5 py-1.5 sm:py-2.5 shadow-sm min-w-0"
                             >
-                              <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-olive-100 text-[10px] font-bold text-olive-700">
+                              <span className="flex h-5 w-5 sm:h-6 sm:w-6 shrink-0 items-center justify-center rounded-full bg-olive-800 text-[9px] sm:text-[10px] font-bold text-olive-200">
                                 0{featureIndex + 1}
                               </span>
-                              <span className="text-xs font-semibold text-stone-700 truncate">{feature}</span>
+                              <span className="text-[10px] sm:text-xs font-semibold text-stone-100 truncate">{feature}</span>
                             </div>
                           ))}
                         </div>
                       </div>
 
-                      <div className="mt-8 flex flex-col gap-3 sm:flex-row">
+                      <div className="mt-4 sm:mt-6 flex flex-col gap-2 sm:flex-row">
                         <Button
                           asChild
-                          size="lg"
-                          className="bg-olive-600 px-8 text-white shadow-lg shadow-olive-900/10 transition-transform duration-200 hover:-translate-y-0.5 hover:bg-olive-700 text-sm font-semibold"
+                          className="bg-olive-600 px-6 sm:px-8 text-white shadow-lg shadow-olive-900/10 transition-transform duration-200 hover:-translate-y-0.5 hover:bg-olive-700 text-xs sm:text-sm font-semibold h-9 sm:h-11"
                         >
                           <Link to={slide.primaryCta.to}>
                             {slide.primaryCta.label}
-                            <ArrowRight className="ml-2 h-4 w-4" />
+                            <ArrowRight className="ml-1.5 h-3.5 w-3.5" />
                           </Link>
                         </Button>
                         {slide.secondaryCta ? (
                           <Button
                             asChild
-                            size="lg"
                             variant="outline"
-                            className="border-olive-300 bg-white px-8 text-olive-800 transition-transform duration-200 hover:-translate-y-0.5 hover:bg-stone-50 text-sm font-semibold"
+                            className="border-white/30 bg-white/10 px-6 sm:px-8 text-white transition-transform duration-200 hover:-translate-y-0.5 hover:bg-white/20 text-xs sm:text-sm font-semibold h-9 sm:h-11"
                           >
                             <Link to={slide.secondaryCta.to}>{slide.secondaryCta.label}</Link>
                           </Button>
