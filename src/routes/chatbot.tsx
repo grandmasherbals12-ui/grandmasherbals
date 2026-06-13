@@ -78,6 +78,8 @@ function ChatbotPage() {
             role: m.role,
             content: m.content
           })),
+          temperature: 0.7,
+          max_tokens: 500,
         }),
       });
 

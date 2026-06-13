@@ -11,6 +11,42 @@ interface ChatMessage {
 
 const OPENROUTER_API_KEY = import.meta.env.VITE_OPENROUTER_API_KEY as string;
 
+// Fallback responses for when API is unavailable
+const fallbackResponses: Record<string, string> = {
+  greeting: "Welcome to Grandma's Herbals! 🌿 I'm here to help you with information about our organic herbal products, wellness consultations, and membership options. What would you like to know?",
+  products: "We offer a variety of herbal products including tinctures, teas, wellness formulas, and customized compounds. Our most popular items are:\n\n• Calming Tincture - for stress relief\n• Herbal Sleep Tea - for restful sleep\n• Immunity Mushroom Blend - for immune support\n• Golden Turmeric Oil - for inflammation\n\nWould you like to know more about any of these?",
+  membership: "We offer personalized wellness memberships with:\n\n✨ Customized herbal formulas\n✨ Monthly consultations\n✨ Progress tracking\n✨ Priority support\n\nOur memberships start at $99/month. Would you like to learn more or schedule a consultation?",
+  consultation: "Our wellness consultations include:\n\n• One-on-one assessment with our herbalists\n• Personalized wellness plan\n• Custom herbal recommendations\n• Follow-up support\n\nYou can book a consultation through our website or by calling us. Visit our consultation page to get started!",
+  ingredients: "All our products use 100% organic, sustainably-sourced botanicals. We work with trusted suppliers and test all ingredients for purity and potency. Common herbs we use include:\n\n• Valerian Root, Passionflower (calming)\n• Chamomile, Lemon Balm (sleep)\n• Reishi, Maitake Mushrooms (immunity)\n• Turmeric, Ginger (inflammation)\n\nWhat specific ingredient would you like to know about?",
+  safety: "All our products are:\n\n✅ Made with organic ingredients\n✅ Third-party tested for purity\n✅ Prepared in a certified facility\n✅ Free from artificial additives\n\nHowever, please note our products are for educational and wellness purposes and have not been evaluated by the FDA. Always consult with a healthcare provider before starting any new supplement.",
+  default: "Thank you for your question! For the most accurate and detailed information, I recommend:\n\n• Browsing our Shop page for product details\n• Visiting our Consultation page to speak with an expert\n• Checking our About page to learn more about us\n\nIs there anything specific about our products or services you'd like to know?",
+};
+
+function getFallbackResponse(message: string): string {
+  const lowerMessage = message.toLowerCase();
+  
+  if (lowerMessage.match(/\b(hi|hello|hey|greet)\b/)) {
+    return fallbackResponses.greeting;
+  }
+  if (lowerMessage.match(/\b(product|shop|buy|purchase|tincture|tea|oil|blend)\b/)) {
+    return fallbackResponses.products;
+  }
+  if (lowerMessage.match(/\b(member|membership|subscribe|subscription|monthly)\b/)) {
+    return fallbackResponses.membership;
+  }
+  if (lowerMessage.match(/\b(consult|consultation|appointment|book|schedule|talk|speak)\b/)) {
+    return fallbackResponses.consultation;
+  }
+  if (lowerMessage.match(/\b(ingredient|herb|organic|natural|plant|botanical)\b/)) {
+    return fallbackResponses.ingredients;
+  }
+  if (lowerMessage.match(/\b(safe|safety|side effect|fda|approved|certified|test)\b/)) {
+    return fallbackResponses.safety;
+  }
+  
+  return fallbackResponses.default;
+}
+
 export function FloatingChatbot() {
   const [isOpen, setIsOpen] = useState(false);
   const [isMinimized, setIsMinimized] = useState(false);
@@ -51,42 +87,78 @@ export function FloatingChatbot() {
     setMessages(updatedMessages);
     setIsLoading(true);
 
-    try {
-      const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${OPENROUTER_API_KEY}`,
-          "HTTP-Referer": window.location.origin,
-          "X-Title": "Grandma's Herbals",
-        },
-        body: JSON.stringify({
-          model: "meta-llama/llama-3.1-8b-instruct:free",
-          messages: updatedMessages.map(m => ({
-            role: m.role,
-            content: m.content
-          })),
-        }),
-      });
+    // Try AI API first, fallback to pattern matching
+    let useAI = OPENROUTER_API_KEY && OPENROUTER_API_KEY.length > 10;
 
-      if (!response.ok) {
-        throw new Error(`API error: ${response.statusText}`);
+    if (useAI) {
+      try {
+        const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${OPENROUTER_API_KEY}`,
+            "HTTP-Referer": window.location.origin,
+            "X-Title": "Grandma's Herbals",
+          },
+          body: JSON.stringify({
+            model: "meta-llama/llama-3-8b-instruct:free",
+            messages: updatedMessages.map(m => ({
+              role: m.role,
+              content: m.content
+            })),
+            temperature: 0.7,
+            max_tokens: 500,
+          }),
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json().catch(() => null);
+          console.error("API Response Error:", response.status, errorData);
+          
+          // If 401, switch to fallback mode permanently for this session
+          if (response.status === 401) {
+            console.log("API key invalid, switching to fallback mode");
+            useAI = false;
+            throw new Error("Invalid API key");
+          }
+          throw new Error(`API error: ${response.status} ${response.statusText}`);
+        }
+
+        const data = await response.json();
+        console.log("API Response:", data);
+        
+        const botResponse = data.choices?.[0]?.message?.content || "I'm sorry, I encountered an issue processing that. Please try again.";
+
+        setMessages((current) => [
+          ...current,
+          { role: "assistant", content: botResponse }
+        ]);
+        setIsLoading(false);
+        return;
+      } catch (error: any) {
+        console.error("AI API failed, using fallback:", error);
+        // Continue to fallback
       }
+    }
 
-      const data = await response.json();
-      const botResponse = data.choices?.[0]?.message?.content || "I'm sorry, I encountered an issue processing that. Please try again.";
-
+    // Fallback to pattern matching
+    try {
+      const fallbackResponse = getFallbackResponse(userMessageContent);
+      
+      // Simulate thinking delay for better UX
+      await new Promise(resolve => setTimeout(resolve, 800));
+      
       setMessages((current) => [
         ...current,
-        { role: "assistant", content: botResponse }
+        { role: "assistant", content: fallbackResponse }
       ]);
     } catch (error) {
-      console.error("Chatbot API Error:", error);
+      console.error("Fallback error:", error);
       setMessages((current) => [
         ...current,
         {
           role: "assistant",
-          content: "I apologize, but I am unable to connect to the wellness network right now. Please check back in a few moments or visit our consultation page for direct assistance."
+          content: "I apologize for the technical difficulty. Please visit our Consultation page to speak with a team member directly, or browse our Shop to explore our products."
         }
       ]);
     } finally {
