@@ -73,7 +73,7 @@ function ChatbotPage() {
           "X-Title": "Grandma's Herbals",
         },
         body: JSON.stringify({
-          model: "meta-llama/llama-3-8b-instruct:free",
+          model: "openrouter/free",
           messages: updatedMessages.map(m => ({
             role: m.role,
             content: m.content

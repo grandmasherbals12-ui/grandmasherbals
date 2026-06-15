@@ -1,3 +1,4 @@
+
 import { createFileRoute } from "@tanstack/react-router";
 import { useAuth } from "@/lib/auth-context";
 import { SiteLayout } from "@/components/site/SiteLayout";
@@ -494,4 +495,5 @@ function AccountPage() {
       </section>
     </SiteLayout>
   );
+
 }
