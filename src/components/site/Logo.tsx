@@ -1,7 +1,5 @@
 import { Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { X } from "lucide-react";
 
 export function Logo({ className = "" }: { className?: string }) {
   const [showImage, setShowImage] = (useState as any)(true);
@@ -49,53 +47,101 @@ export function Logo({ className = "" }: { className?: string }) {
         </span>
       </Link>
 
-      {/* Enlarged Logo Modal */}
-      <AnimatePresence>
-        {isEnlarged && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setIsEnlarged(false)}
-            className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/70 backdrop-blur-md p-4 sm:p-6 md:p-8"
-            style={{ margin: 0 }}
+      {/* Enlarged Logo Modal - Fixed positioning */}
+      {isEnlarged && (
+        <div
+          onClick={() => setIsEnlarged(false)}
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100vw',
+            height: '100vh',
+            backgroundColor: 'rgba(0, 0, 0, 0.85)',
+            backdropFilter: 'blur(8px)',
+            zIndex: 999999,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            padding: '20px'
+          }}
+        >
+          <div
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              position: 'relative',
+              animation: 'fadeIn 0.3s ease-out'
+            }}
           >
-            <motion.div
-              initial={{ scale: 0.5, opacity: 0, y: -50 }}
-              animate={{ scale: 1, opacity: 1, y: 0 }}
-              exit={{ scale: 0.5, opacity: 0, y: -50 }}
-              transition={{ type: "spring", damping: 20, stiffness: 300 }}
-              onClick={(e) => e.stopPropagation()}
-              className="relative flex items-center justify-center"
+            <img
+              src="/logo.png"
+              alt="Grandma's Herbals - Enlarged"
+              style={{
+                width: '400px',
+                height: '400px',
+                maxWidth: '90vw',
+                maxHeight: '90vh',
+                objectFit: 'contain',
+                borderRadius: '24px',
+                boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)',
+                border: '4px solid rgba(132, 204, 22, 0.6)',
+                backgroundColor: 'rgba(255, 255, 255, 0.1)'
+              }}
+            />
+            
+            {/* Close Button */}
+            <button
+              onClick={() => setIsEnlarged(false)}
+              style={{
+                position: 'absolute',
+                top: '-16px',
+                right: '-16px',
+                width: '56px',
+                height: '56px',
+                borderRadius: '50%',
+                backgroundColor: '#dc2626',
+                color: 'white',
+                border: '4px solid white',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                boxShadow: '0 10px 30px rgba(220, 38, 38, 0.5)',
+                transition: 'all 0.2s',
+                fontSize: '24px',
+                fontWeight: 'bold'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.transform = 'scale(1.1)';
+                e.currentTarget.style.backgroundColor = '#b91c1c';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.transform = 'scale(1)';
+                e.currentTarget.style.backgroundColor = '#dc2626';
+              }}
             >
-              {/* Enlarged Logo Image - Fully Responsive & Centered */}
-              <div className="relative">
-                <img
-                  src="/logo.png"
-                  alt="Grandma's Herbals - Enlarged"
-                  className="w-[320px] h-[320px] xs:w-[360px] xs:h-[360px] sm:w-[420px] sm:h-[420px] md:w-[500px] md:h-[500px] lg:w-[580px] lg:h-[580px] xl:w-[640px] xl:h-[640px] object-contain rounded-3xl shadow-2xl ring-4 ring-olive-300/60 bg-white/10 backdrop-blur-sm"
-                />
-                
-                {/* Close Button with X mark - Top Right Corner */}
-                <button
-                  onClick={() => setIsEnlarged(false)}
-                  className="absolute -top-3 -right-3 sm:-top-4 sm:-right-4 flex items-center justify-center bg-olive-600 hover:bg-olive-700 active:bg-olive-800 text-white rounded-full w-10 h-10 sm:w-12 sm:h-12 transition-all shadow-xl hover:shadow-2xl transform hover:scale-110 active:scale-95 border-2 border-white/20"
-                  aria-label="Close enlarged logo"
-                >
-                  <X className="h-5 w-5 sm:h-6 sm:w-6 stroke-[3]" />
-                </button>
-              </div>
-              
-              {/* Tap instruction for mobile */}
-              <div className="absolute -bottom-16 left-0 right-0 text-center md:hidden">
-                <p className="text-white/90 text-sm font-medium bg-black/40 backdrop-blur-sm px-4 py-2 rounded-full inline-block">
-                  Tap anywhere to close
-                </p>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+              ✕
+            </button>
+            
+            <div style={{
+              position: 'absolute',
+              bottom: '-70px',
+              left: '50%',
+              transform: 'translateX(-50%)',
+              color: 'white',
+              fontSize: '14px',
+              fontWeight: 600,
+              backgroundColor: 'rgba(0, 0, 0, 0.7)',
+              padding: '12px 24px',
+              borderRadius: '9999px',
+              whiteSpace: 'nowrap',
+              boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)'
+            }}>
+              Click anywhere to close
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
