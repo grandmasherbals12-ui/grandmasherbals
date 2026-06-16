@@ -100,6 +100,7 @@ export function Hero() {
   const [current, setCurrent] = useState(0);
   const autoplayRef = useRef<number | null>(null);
   const videoRefs = useRef<Array<HTMLVideoElement | null>>([]);
+  const autoplayCountRef = useRef<number>(0);
 
   useEffect(() => {
     if (!api) return;
@@ -126,6 +127,36 @@ export function Hero() {
     }
 
     autoplayRef.current = window.setInterval(() => {
+      autoplayCountRef.current += 1;
+      
+      // After 3 autoplay cycles, encourage scrolling with subtle animation
+      if (autoplayCountRef.current >= 3) {
+        autoplayCountRef.current = 0;
+        
+        // Trigger soft scroll animation to encourage user interaction
+        const scrollElement = document.documentElement;
+        const currentScroll = scrollElement.scrollTop;
+        const targetScroll = Math.min(currentScroll + 80, scrollElement.scrollHeight - window.innerHeight);
+        
+        if (targetScroll > currentScroll) {
+          const duration = 800;
+          const start = Date.now();
+          
+          const animate = () => {
+            const elapsed = Date.now() - start;
+            const progress = Math.min(elapsed / duration, 1);
+            const easeOut = 1 - Math.pow(1 - progress, 3);
+            scrollElement.scrollTop = currentScroll + (targetScroll - currentScroll) * easeOut;
+            
+            if (progress < 1) {
+              requestAnimationFrame(animate);
+            }
+          };
+          
+          requestAnimationFrame(animate);
+        }
+      }
+      
       api.scrollNext();
     }, 7000);
 
@@ -178,8 +209,8 @@ export function Hero() {
             {slides.map((slide, index) => (
               <CarouselItem key={slide.id} className="p-0">
                 <div className="relative w-full h-[560px] sm:h-[640px] md:h-[680px] lg:h-[720px] overflow-hidden bg-stone-950">
-                  {/* Media (Image or Video) */}
-                  <div className="absolute inset-0 h-full w-full">
+                  {/* Media (Image or Video) - Full Background */}
+                  <div className="absolute inset-0 w-full h-full z-0">
                     {slide.type === "video" ? (
                       <video
                         ref={(el) => {
@@ -198,6 +229,7 @@ export function Hero() {
                         src={slide.media}
                         alt={slide.alt}
                         className="h-full w-full object-cover"
+                        loading="eager"
                         onError={(event) => {
                           event.currentTarget.style.display = "none";
                         }}
@@ -205,74 +237,77 @@ export function Hero() {
                     )}
                   </div>
 
-                  {/* Premium Dark Gradient Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-stone-950/80 via-stone-900/40 to-transparent z-10" />
-                  
-                  {/* Overlay Content */}
-                  <div className="absolute inset-0 z-20 flex items-end justify-center px-3 sm:px-6 md:px-12 lg:px-24 py-6 sm:py-14">
+                  {/* Gradient Overlay - Only at bottom for card area */}
+                  <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-stone-950/90 via-stone-950/50 to-transparent z-[2]" />
+
+                  {/* Content Card - Positioned at bottom, more compact */}
+                  <div className="absolute bottom-0 left-0 right-0 z-[15] w-full px-3 sm:px-6 md:px-12 lg:px-24 pb-4 sm:pb-6">
                     <motion.div
                       initial={{ opacity: 0, y: 30 }}
                       animate={index === current ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
                       transition={{ duration: 0.65, ease: "easeOut" }}
-                      className="w-full max-w-4xl bg-stone-950/45 backdrop-blur-md border border-white/10 shadow-2xl rounded-3xl p-4 sm:p-8 md:p-10 text-white"
+                      className="w-full max-w-4xl bg-stone-900/60 backdrop-blur-md border border-white/10 shadow-2xl rounded-2xl p-3 sm:p-5 md:p-6 text-white mx-auto"
                     >
-                      <div className="mb-3 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[9px] sm:text-xs font-semibold uppercase tracking-[0.25em] text-white shadow-sm">
-                        <slide.icon className="h-3.5 w-3.5" />
+                      <div className="mb-2 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-2.5 py-0.5 text-[8px] sm:text-[10px] font-semibold uppercase tracking-[0.25em] text-white shadow-sm">
+                        <slide.icon className="h-3 w-3" />
                         <span>{slide.eyebrow}</span>
                       </div>
 
-                      <h1 className="max-w-2xl text-xl sm:text-4xl md:text-5xl lg:text-6xl font-cormorant font-bold tracking-tight text-white leading-[1.15]">
+                      <h1 className="max-w-2xl text-lg sm:text-3xl md:text-4xl lg:text-5xl font-cormorant font-bold tracking-tight text-white leading-[1.1]">
                         {slide.title}
                       </h1>
 
-                      <p className="mt-2 max-w-xl text-[9px] sm:text-xs font-semibold uppercase tracking-[0.2em] text-amber-200/90">
-                        {slide.subtitle}
-                      </p>
-
-                      <p className="mt-3 max-w-2xl text-xs sm:text-sm leading-relaxed text-stone-200 hidden sm:block">
-                        {slide.description}
-                      </p>
-
-                      {/* Numbered Feature Cards (Glassmorphic Cards) */}
-                      <div className="mt-3 sm:mt-5 rounded-2xl border border-white/10 bg-white/5 p-3 sm:p-4 shadow-inner">
-                        <p className="text-[9px] font-bold uppercase tracking-[0.35em] text-amber-300">
+                      {/* Numbered Feature Cards (Glassmorphic Cards) with Subtitle */}
+                      <div className="mt-2 sm:mt-3 rounded-xl border border-white/10 bg-white/5 p-2 sm:p-3 shadow-inner">
+                        {/* Yellow Subtitle - Inside the box as client marked with RED */}
+                        <p className="text-[8px] sm:text-[10px] font-bold uppercase tracking-[0.25em] text-amber-300/95 mb-1.5">
+                          {slide.subtitle}
+                        </p>
+                        
+                        <p className="text-[8px] font-bold uppercase tracking-[0.35em] text-amber-300">
                           Guided by heritage
                         </p>
-                        <div className="mt-2 grid gap-2 grid-cols-2 md:grid-cols-4">
+                        <div className="mt-1.5 grid gap-1.5 grid-cols-2 md:grid-cols-4">
                           {slide.features.slice(0, 4).map((feature, featureIndex) => (
                             <div
                               key={feature}
-                              className="flex items-center gap-2 rounded-xl border border-white/5 bg-white/10 px-2.5 py-1.5 sm:py-2.5 shadow-sm min-w-0"
+                              className="flex items-center gap-1.5 rounded-lg border border-white/5 bg-white/10 px-2 py-1 sm:py-1.5 shadow-sm min-w-0"
                             >
-                              <span className="flex h-5 w-5 sm:h-6 sm:w-6 shrink-0 items-center justify-center rounded-full bg-olive-800 text-[9px] sm:text-[10px] font-bold text-olive-200">
+                              <span className="flex h-4 w-4 sm:h-5 sm:w-5 shrink-0 items-center justify-center rounded-full bg-olive-800 text-[8px] sm:text-[9px] font-bold text-olive-200">
                                 0{featureIndex + 1}
                               </span>
-                              <span className="text-[10px] sm:text-xs font-semibold text-stone-100 truncate">{feature}</span>
+                              <span className="text-[9px] sm:text-[10px] font-semibold text-stone-100 truncate">{feature}</span>
                             </div>
                           ))}
                         </div>
                       </div>
 
-                      <div className="mt-4 sm:mt-6 flex flex-col gap-2 sm:flex-row">
+                      {/* CTA Buttons in middle */}
+                      <div className="mt-3 sm:mt-4 flex flex-col gap-1.5 sm:flex-row sm:gap-2">
                         <Button
                           asChild
-                          className="bg-olive-600 px-6 sm:px-8 text-white shadow-lg shadow-olive-900/10 transition-transform duration-200 hover:-translate-y-0.5 hover:bg-olive-700 text-xs sm:text-sm font-semibold h-9 sm:h-11"
+                          className="bg-olive-600 px-4 sm:px-6 text-white shadow-lg shadow-olive-900/10 transition-transform duration-200 hover:-translate-y-0.5 hover:bg-olive-700 text-[10px] sm:text-xs font-semibold h-8 sm:h-9"
                         >
                           <Link to={slide.primaryCta.to}>
                             {slide.primaryCta.label}
-                            <ArrowRight className="ml-1.5 h-3.5 w-3.5" />
+                            <ArrowRight className="ml-1 h-3 w-3" />
                           </Link>
                         </Button>
                         {slide.secondaryCta ? (
                           <Button
                             asChild
                             variant="outline"
-                            className="border-white/30 bg-white/10 px-6 sm:px-8 text-white transition-transform duration-200 hover:-translate-y-0.5 hover:bg-white/20 text-xs sm:text-sm font-semibold h-9 sm:h-11"
+                            className="border-white/30 bg-white/10 px-4 sm:px-6 text-white transition-transform duration-200 hover:-translate-y-0.5 hover:bg-white/20 text-[10px] sm:text-xs font-semibold h-8 sm:h-9"
                           >
                             <Link to={slide.secondaryCta.to}>{slide.secondaryCta.label}</Link>
                           </Button>
                         ) : null}
                       </div>
+
+                      {/* Red/Pink description text at BOTTOM - As client marked with BLUE line */}
+                      <p className="mt-3 sm:mt-4 max-w-2xl text-[10px] sm:text-xs font-medium text-rose-400/95 tracking-wide leading-relaxed border-t border-white/10 pt-2 sm:pt-3">
+                        {slide.description}
+                      </p>
                     </motion.div>
                   </div>
                 </div>
@@ -280,10 +315,10 @@ export function Hero() {
             ))}
           </CarouselContent>
 
-          <CarouselPrevious className="hidden md:flex left-4 lg:left-8 border-white/40 bg-white/70 text-olive-800 shadow-lg backdrop-blur hover:bg-white z-30" />
-          <CarouselNext className="hidden md:flex right-4 lg:right-8 border-white/40 bg-white/70 text-olive-800 shadow-lg backdrop-blur hover:bg-white z-30" />
+          <CarouselPrevious className="hidden md:flex left-4 lg:left-8 border-white/40 bg-white/70 text-olive-800 shadow-lg backdrop-blur hover:bg-white z-[25]" />
+          <CarouselNext className="hidden md:flex right-4 lg:right-8 border-white/40 bg-white/70 text-olive-800 shadow-lg backdrop-blur hover:bg-white z-[25]" />
 
-          <div className="absolute bottom-4 left-1/2 z-30 flex -translate-x-1/2 gap-2 md:bottom-8">
+          <div className="absolute bottom-4 left-1/2 z-[25] flex -translate-x-1/2 gap-2 md:bottom-8">
             {slides.map((_, index) => (
               <button
                 key={index}
