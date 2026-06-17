@@ -246,32 +246,44 @@ export function Hero() {
                       initial={{ opacity: 0, y: 30 }}
                       animate={index === current ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
                       transition={{ duration: 0.65, ease: "easeOut" }}
-                      className="w-full max-w-4xl bg-stone-900/60 backdrop-blur-md border border-white/10 shadow-2xl rounded-2xl p-3 sm:p-5 md:p-6 text-white mx-auto"
+                      className="w-full max-w-4xl bg-stone-900/40 backdrop-blur-sm border border-white/30 shadow-2xl rounded-2xl p-4 sm:p-5 md:p-6 text-white mx-auto"
                     >
                       <div className="mb-2 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-2.5 py-0.5 text-[8px] sm:text-[10px] font-semibold uppercase tracking-[0.25em] text-white shadow-sm">
                         <slide.icon className="h-3 w-3" />
                         <span>{slide.eyebrow}</span>
                       </div>
 
-                      <h1 className="max-w-2xl text-lg sm:text-3xl md:text-4xl lg:text-5xl font-cormorant font-bold tracking-tight text-white leading-[1.1]">
+                      <motion.h1 
+                        initial={{ opacity: 0, x: 40 }}
+                        animate={index === current ? { opacity: 1, x: 0 } : { opacity: 0, x: -40 }}
+                        transition={{ duration: 0.8, type: "spring", bounce: 0.4, delay: 0.2 }}
+                        className="max-w-2xl text-xl sm:text-3xl md:text-4xl lg:text-5xl font-cormorant font-bold tracking-tight text-white leading-[1.1]"
+                      >
                         {slide.title}
-                      </h1>
+                      </motion.h1>
 
-                      {/* Numbered Feature Cards (Glassmorphic Cards) with Subtitle */}
-                      <div className="mt-2 sm:mt-3 rounded-xl border border-white/10 bg-white/5 p-2 sm:p-3 shadow-inner">
-                        {/* Yellow Subtitle - Inside the box as client marked with RED */}
-                        <p className="text-[8px] sm:text-[10px] font-bold uppercase tracking-[0.25em] text-amber-300/95 mb-1.5">
-                          {slide.subtitle}
-                        </p>
-                        
-                        <p className="text-[8px] font-bold uppercase tracking-[0.35em] text-amber-300">
-                          Guided by heritage
-                        </p>
-                        <div className="mt-1.5 grid gap-1.5 grid-cols-2 md:grid-cols-4">
+                      {/* White Subtitle - Moved outside the box */}
+                      <motion.p 
+                        initial={{ opacity: 0, x: 40 }}
+                        animate={index === current ? { opacity: 1, x: 0 } : { opacity: 0, x: -40 }}
+                        transition={{ duration: 0.8, type: "spring", bounce: 0.4, delay: 0.3 }}
+                        className="mt-2 text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-white/95"
+                      >
+                        {slide.subtitle}
+                      </motion.p>
+
+                      {/* Numbered Feature Cards - Box made smaller and optimized for mobile */}
+                      <motion.div 
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={index === current ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                        transition={{ duration: 0.6, ease: "easeOut", delay: 0.4 }}
+                        className="mt-3 sm:mt-4 rounded-xl border border-white/10 bg-white/5 p-1.5 sm:p-2 shadow-inner"
+                      >
+                        <div className="grid gap-1.5 grid-cols-2 md:grid-cols-4">
                           {slide.features.slice(0, 4).map((feature, featureIndex) => (
                             <div
                               key={feature}
-                              className="flex items-center gap-1.5 rounded-lg border border-white/5 bg-white/10 px-2 py-1 sm:py-1.5 shadow-sm min-w-0"
+                              className="flex items-center gap-1.5 rounded-lg border border-white/5 bg-white/10 px-2 py-1.5 shadow-sm min-w-0"
                             >
                               <span className="flex h-4 w-4 sm:h-5 sm:w-5 shrink-0 items-center justify-center rounded-full bg-olive-800 text-[8px] sm:text-[9px] font-bold text-olive-200">
                                 0{featureIndex + 1}
@@ -280,10 +292,15 @@ export function Hero() {
                             </div>
                           ))}
                         </div>
-                      </div>
+                      </motion.div>
 
                       {/* CTA Buttons in middle */}
-                      <div className="mt-3 sm:mt-4 flex flex-col gap-1.5 sm:flex-row sm:gap-2">
+                      <motion.div 
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={index === current ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                        transition={{ duration: 0.6, ease: "easeOut", delay: 0.5 }}
+                        className="mt-3 sm:mt-4 flex flex-col gap-2 sm:flex-row"
+                      >
                         <Button
                           asChild
                           className="bg-olive-600 px-4 sm:px-6 text-white shadow-lg shadow-olive-900/10 transition-transform duration-200 hover:-translate-y-0.5 hover:bg-olive-700 text-[10px] sm:text-xs font-semibold h-8 sm:h-9"
@@ -302,12 +319,17 @@ export function Hero() {
                             <Link to={slide.secondaryCta.to}>{slide.secondaryCta.label}</Link>
                           </Button>
                         ) : null}
-                      </div>
+                      </motion.div>
 
-                      {/* Red/Pink description text at BOTTOM - As client marked with BLUE line */}
-                      <p className="mt-3 sm:mt-4 max-w-2xl text-[10px] sm:text-xs font-medium text-rose-400/95 tracking-wide leading-relaxed border-t border-white/10 pt-2 sm:pt-3">
+                      {/* White description text at BOTTOM */}
+                      <motion.p 
+                        initial={{ opacity: 0 }}
+                        animate={index === current ? { opacity: 1 } : { opacity: 0 }}
+                        transition={{ duration: 0.5, delay: 0.6 }}
+                        className="mt-3 sm:mt-4 max-w-2xl text-[10px] sm:text-xs font-medium text-white/90 tracking-wide leading-relaxed border-t border-white/10 pt-2 sm:pt-3"
+                      >
                         {slide.description}
-                      </p>
+                      </motion.p>
                     </motion.div>
                   </div>
                 </div>

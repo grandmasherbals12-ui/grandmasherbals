@@ -41,7 +41,7 @@ export function Logo({ className = "" }: { className?: string }) {
           <span className="font-serif text-base sm:text-xl md:text-2xl lg:text-3xl font-semibold tracking-tight text-foreground transition-all duration-300 truncate">
             Grandma's Herbals
           </span>
-          <span className="text-[10px] uppercase tracking-[0.2em] text-muted-foreground mt-0.5 transition-all duration-300 hidden sm:block truncate">
+          <span className="text-[8px] sm:text-[10px] uppercase tracking-[0.1em] sm:tracking-[0.2em] text-muted-foreground mt-0.5 transition-all duration-300 block truncate">
             Plant Wisdom From Root To Leaf.
           </span>
         </span>

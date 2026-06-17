@@ -1,38 +1,68 @@
-import { Button } from "@/components/ui/button";
 import { Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 
 export function About() {
   return (
-    <section className="relative overflow-hidden py-20 sm:py-24">
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(199,213,180,0.35),transparent_30%),radial-gradient(circle_at_bottom_right,rgba(252,240,196,0.55),transparent_34%)]" />
-      <div className="container mx-auto px-4 relative">
-        <div className="grid items-center gap-12">
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="overflow-hidden rounded-[1.5rem] bg-gradient-to-br from-olive-50 via-white to-amber-50 p-8 sm:p-10 text-center"
-          >
-            <p className="text-xs font-semibold uppercase tracking-[0.35em] text-olive-700">
-              Heritage & Wellness
-            </p>
-            <h2 className="mx-auto max-w-2xl text-3xl font-cormorant font-bold leading-tight sm:text-4xl">
-              Learn more about our heritage, values, and practices.
-            </h2>
-            <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-stone-700 sm:text-lg">
-              The full story and values are available on our About page. Visit to explore the
-              traditions and inspirations behind Grandma's Herbals.
-            </p>
+    <section id="about" className="relative w-full min-h-[70vh] md:min-h-[80vh] flex items-center overflow-hidden">
+      {/* Background Image — full width, no padding */}
+      <img
+        src="/yogaplant.jpeg"
+        alt="Yoga plant scene"
+        className="absolute inset-0 w-full h-full object-cover"
+      />
+      {/* Overlay gradient */}
+      <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/50 to-transparent" />
 
-            <div className="mt-6">
-              <Button asChild size="lg" className="bg-olive-600 px-6 text-white hover:bg-olive-700">
-                <Link to="/about">Discover Our Story</Link>
-              </Button>
-            </div>
-          </motion.div>
-        </div>
+      {/* Content */}
+      <div className="relative z-10 container mx-auto px-6 py-16 md:py-24">
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8 }}
+          className="max-w-2xl space-y-6"
+        >
+          <p className="text-xs font-semibold uppercase tracking-[0.35em] text-amber-300">
+            Heritage &amp; Wellness
+          </p>
+          <h2 className="text-4xl font-cormorant font-bold leading-tight text-white sm:text-5xl lg:text-6xl">
+            ROOTED IN HERITAGE. <br className="hidden sm:inline" />
+            GROWN THROUGH GENERATIONS.
+          </h2>
+          <div className="space-y-4 text-white/85 text-sm sm:text-base max-w-xl">
+            <p className="leading-7">
+              Our story is rooted in Creole traditions, Native American plant wisdom, and West African botanical knowledge, connecting waterways and communities from Louisiana to Belize. For generations, families cultivated herbs and healing plants to support wellness, resilience, and connection to nature.
+            </p>
+            <p className="leading-7">
+              Grandma&apos;s Herbals honors these traditions by blending ancestral wisdom with modern understanding to support balance of the mind, body, and spirit through natural, regenerative wellness solutions.
+            </p>
+          </div>
+
+          <div className="grid gap-3 sm:grid-cols-2 max-w-md">
+            {[
+              "Respect Nature.",
+              "Honor Heritage.",
+              "Support Wellness.",
+              "Strengthen Community.",
+            ].map((item) => (
+              <div
+                key={item}
+                className="rounded-xl border border-white/20 bg-white/10 backdrop-blur-sm px-4 py-3 text-left text-xs sm:text-sm font-semibold text-white shadow-sm"
+              >
+                {item}
+              </div>
+            ))}
+          </div>
+
+          <div className="pt-2">
+            <Link
+              to="/consultation"
+              className="inline-flex items-center justify-center rounded-full bg-olive-600 px-8 py-3 text-sm font-semibold text-white shadow-lg shadow-black/20 transition-transform duration-200 hover:-translate-y-0.5 hover:bg-olive-700"
+            >
+              Book a Consultation
+            </Link>
+          </div>
+        </motion.div>
       </div>
     </section>
   );

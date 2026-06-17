@@ -17,15 +17,8 @@ function Index() {
       <Hero />
       <FeaturedProducts />
       <Testimonials />
-      <About />
       <FAQSection />
-      <div className="w-full p-0 m-0 overflow-hidden">
-        <img
-          src="/yogaplant.jpeg"
-          alt="Grandma's Herbals Botanical Scene"
-          className="w-full h-auto block"
-        />
-      </div>
+      <About />
       <Social />
     </SiteLayout>
   );
