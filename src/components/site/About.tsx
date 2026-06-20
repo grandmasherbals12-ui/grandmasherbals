@@ -23,7 +23,7 @@ export function About() {
           className="max-w-2xl space-y-6"
         >
           <p className="text-xs font-semibold uppercase tracking-[0.35em] text-amber-300">
-            Heritage &amp; Wellness
+            About Us <span className="mx-2 text-white/50">•</span> Heritage &amp; Wellness
           </p>
           <h2 className="text-4xl font-cormorant font-bold leading-tight text-white sm:text-5xl lg:text-6xl">
             ROOTED IN HERITAGE. <br className="hidden sm:inline" />

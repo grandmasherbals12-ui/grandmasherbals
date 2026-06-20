@@ -8,8 +8,9 @@ import { Label } from "@/components/ui/label";
 import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
-import { LogOut, User, ShoppingBag, Heart } from "lucide-react";
+import { LogOut, User, ShoppingBag, Heart, Leaf } from "lucide-react";
 import { useNavigate } from "@tanstack/react-router";
+import { AuthModal } from "@/components/site/AuthModal";
 
 export const Route = createFileRoute("/account")({
   component: AccountPage,
@@ -34,7 +35,8 @@ interface Order {
 }
 
 function AccountPage() {
-  const { user, isAuthenticated, logout } = useAuth();
+  const { user, isAuthenticated, signOut } = useAuth();
+  const [authModalOpen, setAuthModalOpen] = useState(false);
   const navigate = useNavigate();
   const [profile, setProfile] = useState<UserProfile>({
     full_name: "",
@@ -51,13 +53,7 @@ function AccountPage() {
   const [isSaving, setIsSaving] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
 
-  // Redirect if not authenticated
-  useEffect(() => {
-    if (!isAuthenticated) {
-      navigate({ to: "/" });
-      toast.error("Please log in to view your account.");
-    }
-  }, [isAuthenticated, navigate]);
+  // No redirect — show inline login prompt instead
 
   // Load user profile and orders
   useEffect(() => {
@@ -145,7 +141,7 @@ function AccountPage() {
 
   const handleLogout = async () => {
     try {
-      await logout();
+      await signOut();
       navigate({ to: "/" });
       toast.success("Logged out successfully.");
     } catch (error: any) {
@@ -154,7 +150,37 @@ function AccountPage() {
   };
 
   if (!isAuthenticated) {
-    return null;
+    return (
+      <SiteLayout>
+        <section className="min-h-[70vh] flex items-center justify-center bg-gradient-to-b from-stone-50 to-olive-50/40">
+          <div className="text-center max-w-md mx-auto px-6">
+            <div className="flex items-center justify-center w-20 h-20 mx-auto rounded-full bg-olive-100 mb-6">
+              <Leaf className="w-10 h-10 text-olive-600" />
+            </div>
+            <h1 className="text-3xl font-cormorant font-bold text-olive-900 mb-3">Welcome to Your Wellness Hub</h1>
+            <p className="text-stone-600 mb-8">
+              Sign in to manage your profile, track orders, and access your personalized wellness journey.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+              <Button
+                onClick={() => setAuthModalOpen(true)}
+                className="rounded-full bg-olive-600 hover:bg-olive-700 px-8"
+              >
+                <User className="w-4 h-4 mr-2" /> Sign In
+              </Button>
+              <Button
+                onClick={() => setAuthModalOpen(true)}
+                variant="outline"
+                className="rounded-full border-olive-300 text-olive-700 px-8"
+              >
+                Create Account
+              </Button>
+            </div>
+          </div>
+        </section>
+        <AuthModal isOpen={authModalOpen} onClose={() => setAuthModalOpen(false)} />
+      </SiteLayout>
+    );
   }
 
   if (isLoading) {

@@ -88,12 +88,12 @@ export function AdminTestimonials() {
     }
   };
 
-  const deleteTestimonial = async (id: string, videoUrl: string) => {
+  const deleteTestimonial = async (id: string, videoUrl?: string) => {
     if (!confirm("Are you sure you want to delete this testimonial?")) return;
 
     try {
       // Extract file name from URL
-      const fileName = videoUrl.split("/").pop();
+      const fileName = videoUrl ? videoUrl.split("/").pop() : null;
 
       // Delete from storage
       if (fileName) {

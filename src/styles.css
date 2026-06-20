@@ -129,3 +129,9 @@ body {
     max-width: 100% !important;
   }
 }
+
+/* Hide native Edge password reveal and clear icons */
+input::-ms-reveal,
+input::-ms-clear {
+  display: none;
+}

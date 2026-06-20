@@ -1,10 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import type { ShowcaseSection } from "@/lib/shop-content";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import { Search, SlidersHorizontal } from "lucide-react";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { ProductCard } from "@/components/site/ProductCard";
-import { categories, products } from "@/lib/products";
+import { categories, products as localProducts, Product, fetchProductsFromSupabase } from "@/lib/products";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -59,6 +59,14 @@ function Shop() {
   const [cat, setCat] = useState<(typeof categories)[number]>("All");
   const [q, setQ] = useState("");
   const [sort, setSort] = useState("featured");
+  const [products, setProducts] = useState<Product[]>(localProducts);
+
+  // Load products from Supabase on mount, fall back to local data
+  useEffect(() => {
+    fetchProductsFromSupabase().then((data) => {
+      if (data && data.length > 0) setProducts(data);
+    });
+  }, []);
 
   const filtered = useMemo(() => {
     let list = products.filter(

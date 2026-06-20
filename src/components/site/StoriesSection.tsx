@@ -313,6 +313,7 @@ export function StoriesSection() {
       .from("stories")
       .select("*, comments:story_comments(id, commenter_name, comment, created_at)")
       .eq("is_approved", true)
+      .eq("story_comments.is_approved", true)
       .order("featured", { ascending: false })
       .order("created_at", { ascending: false })
       .limit(20);

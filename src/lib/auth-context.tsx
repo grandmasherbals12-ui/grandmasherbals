@@ -1,11 +1,15 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { supabase } from "./supabase";
 
+// Hardcoded admin email — always treated as admin regardless of DB
+const ADMIN_EMAIL = "admin@gmail.com";
+
 export interface User {
   id: string;
   email: string;
   fullName?: string;
   avatar?: string;
+  role?: "user" | "admin";
 }
 
 interface AuthContextType {
@@ -15,125 +19,100 @@ interface AuthContextType {
   signIn: (email: string, password: string) => Promise<void>;
   signOut: () => Promise<void>;
   isAuthenticated: boolean;
+  isAdmin: boolean;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
+/** Fetch profile with a 3-second timeout — never throws, never hangs */
+async function fetchProfile(userId: string) {
+  try {
+    const result = await Promise.race([
+      supabase.from("users").select("full_name, avatar_url, role").eq("id", userId).maybeSingle(),
+      new Promise<{ data: null }>((resolve) => setTimeout(() => resolve({ data: null }), 3000)),
+    ]);
+    return (result as any)?.data ?? null;
+  } catch {
+    return null;
+  }
+}
+
+/** Determine if an email is the admin */
+function isAdminEmail(email: string) {
+  return email.trim().toLowerCase() === ADMIN_EMAIL.toLowerCase();
+}
+
+/** Build a User object — always gives admin role to the admin email */
+function buildUser(
+  authUser: { id: string; email?: string },
+  profile?: { full_name?: string; avatar_url?: string; role?: string } | null
+): User {
+  const email = authUser.email || "";
+  const role: "user" | "admin" =
+    isAdminEmail(email) || profile?.role === "admin" ? "admin" : "user";
+  return {
+    id: authUser.id,
+    email,
+    fullName: profile?.full_name ?? undefined,
+    avatar: profile?.avatar_url ?? undefined,
+    role,
+  };
+}
+
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check if user is already logged in
-    const checkAuth = async () => {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-      if (session?.user) {
-        try {
-          const { data } = await supabase
-            .from("users")
-            .select("*")
-            .eq("id", session.user.id)
-            .maybeSingle();
-          setUser({
-            id: session.user.id,
-            email: session.user.email || "",
-            fullName: data?.full_name,
-            avatar: data?.avatar_url,
-          });
-        } catch {
-          // Profile row may not exist yet — set basic user info
-          setUser({
-            id: session.user.id,
-            email: session.user.email || "",
-          });
-        }
-      }
-      setLoading(false);
-    };
+    let mounted = true;
 
-    checkAuth();
-
-    // Subscribe to auth changes
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (event, session) => {
+    // Initial session check
+    supabase.auth.getSession().then(async ({ data: { session } }) => {
+      if (!mounted) return;
       if (session?.user) {
-        try {
-          const { data } = await supabase
-            .from("users")
-            .select("*")
-            .eq("id", session.user.id)
-            .maybeSingle();
-          setUser({
-            id: session.user.id,
-            email: session.user.email || "",
-            fullName: data?.full_name,
-            avatar: data?.avatar_url,
-          });
-        } catch {
-          setUser({
-            id: session.user.id,
-            email: session.user.email || "",
-          });
-        }
-      } else {
-        setUser(null);
+        const profile = await fetchProfile(session.user.id);
+        if (mounted) setUser(buildUser(session.user, profile));
       }
+      if (mounted) setLoading(false);
     });
 
-    return () => subscription?.unsubscribe();
+    // Listen for auth state changes (sign in / sign out)
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      async (_event, session) => {
+        if (!mounted) return;
+        if (session?.user) {
+          const profile = await fetchProfile(session.user.id);
+          if (mounted) setUser(buildUser(session.user, profile));
+        } else {
+          if (mounted) setUser(null);
+        }
+        if (mounted) setLoading(false);
+      }
+    );
+
+    return () => {
+      mounted = false;
+      subscription?.unsubscribe();
+    };
   }, []);
 
   const signUp = async (email: string, password: string, fullName: string) => {
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-    });
-
+    const { data, error } = await supabase.auth.signUp({ email, password });
     if (error) throw error;
-
     if (data.user) {
-      // Create user profile
-      await supabase.from("users").insert({
-        id: data.user.id,
-        email,
-        full_name: fullName,
-      });
-
-      setUser({
-        id: data.user.id,
-        email,
-        fullName,
-      });
+      // Best-effort profile creation — don't block on it
+      supabase.from("users").upsert(
+        { id: data.user.id, email, full_name: fullName, role: isAdminEmail(email) ? "admin" : "user" },
+        { onConflict: "id" }
+      ).then(() => {}); // fire-and-forget
     }
+    // onAuthStateChange will pick up the new session and setUser
   };
 
   const signIn = async (email: string, password: string) => {
-    const { data, error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) throw error;
-
-    if (data.user) {
-      const { data: userData } = await supabase
-        .from("users")
-        .select("*")
-        .eq("id", data.user.id)
-        .maybeSingle();
-
-      setUser({
-        id: data.user.id,
-        email: data.user.email || "",
-        fullName: userData?.full_name,
-        avatar: userData?.avatar_url,
-      });
-    }
+    // onAuthStateChange will fire and call setUser — no extra work needed here
   };
 
   const signOut = async () => {
@@ -141,6 +120,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     if (error) throw error;
     setUser(null);
   };
+
+  // isAdmin: true if the admin email is logged in (regardless of DB)
+  const isAdmin = !!user && (user.role === "admin" || isAdminEmail(user.email));
 
   return (
     <AuthContext.Provider
@@ -151,6 +133,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         signIn,
         signOut,
         isAuthenticated: !!user,
+        isAdmin,
       }}
     >
       {children}
@@ -160,8 +143,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error("useAuth must be used within AuthProvider");
-  }
+  if (!context) throw new Error("useAuth must be used within AuthProvider");
   return context;
 };
