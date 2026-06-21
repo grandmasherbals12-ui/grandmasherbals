@@ -25,7 +25,7 @@ export function About() {
           <p className="text-xs font-semibold uppercase tracking-[0.35em] text-amber-300">
             About Us <span className="mx-2 text-white/50">•</span> Heritage &amp; Wellness
           </p>
-          <h2 className="text-4xl font-cormorant font-bold leading-tight text-white sm:text-5xl lg:text-6xl">
+          <h2 className="text-5xl font-cormorant font-bold leading-[1.05] text-white sm:text-7xl lg:text-8xl tracking-tight">
             ROOTED IN HERITAGE. <br className="hidden sm:inline" />
             GROWN THROUGH GENERATIONS.
           </h2>

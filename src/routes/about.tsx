@@ -32,7 +32,7 @@ function About() {
             <p className="text-xs font-semibold uppercase tracking-[0.35em] text-amber-300">
               Heritage &amp; Wellness
             </p>
-            <h1 className="text-4xl font-cormorant font-bold leading-tight text-white sm:text-5xl lg:text-6xl">
+            <h1 className="text-5xl font-cormorant font-bold leading-[1.05] text-white sm:text-7xl lg:text-8xl tracking-tight">
               ROOTED IN HERITAGE. <br className="hidden sm:inline" />
               GROWN THROUGH GENERATIONS.
             </h1>

@@ -13,6 +13,7 @@ import { toast } from "sonner";
 
 const checkoutSearchSchema = z.object({
   tier: z.enum(["tier-1", "tier-2", "tier-3"]).optional(),
+  addons: z.string().optional(),
 });
 
 export const Route = createFileRoute("/checkout")({
@@ -64,8 +65,18 @@ const GOAL_OPTIONS = [
   "Recovery & performance optimization",
 ];
 
+const ADDON_PRICES: Record<string, number> = {
+  "Guided Meditation Library Access": 19.00,
+  "Smart Meal Protocol Generator": 79.00,
+  "Urgent Consultation": 0.00,
+  "Personalized Herbal Tea & Wellness Kits": 49.00,
+  "Premium Herbal Compounds": 0.00,
+  "Group Meditation Sessions": 199.00,
+  "Corporate Wellness Programs": 0.00,
+};
+
 function CheckoutPage() {
-  const { tier } = Route.useSearch();
+  const { tier, addons } = Route.useSearch();
   const { cart, total, clearCart } = useCart();
   const { user, signUp } = useAuth();
 
@@ -102,6 +113,17 @@ function CheckoutPage() {
     }
   }, [user]);
 
+  // Requirement 5: Additional services require purchase of at least minimum package (Tier I)
+  const resolvedTier = !tier && addons ? "tier-1" : tier;
+
+  useEffect(() => {
+    if (!tier && addons) {
+      toast.info("Additional services require purchase of at least the minimum package. Tier I Foundation Awareness Package has been added to your order.", {
+        duration: 7000,
+      });
+    }
+  }, [tier, addons]);
+
   // Handle name change to automatically default the wellness formula
   const handleNameChange = (newName: string) => {
     setName(newName);
@@ -126,8 +148,10 @@ function CheckoutPage() {
     return true;
   });
 
-  const selectedTier = tier ? TIERS[tier] : null;
-  const finalTotal = total + (selectedTier ? selectedTier.price : 0);
+  const selectedTier = resolvedTier ? TIERS[resolvedTier] : null;
+  const selectedAddonsList = addons ? addons.split(",").filter(Boolean) : [];
+  const addonsTotal = selectedAddonsList.reduce((sum, name) => sum + (ADDON_PRICES[name] || 0), 0);
+  const finalTotal = total + (selectedTier ? selectedTier.price : 0) + addonsTotal;
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -136,7 +160,7 @@ function CheckoutPage() {
     try {
       let activeUserId = user?.id;
 
-      if (tier) {
+      if (resolvedTier) {
         // Membership signup requires registration if not logged in
         if (!activeUserId) {
           if (!password) {
@@ -175,10 +199,11 @@ function CheckoutPage() {
           gender: gender,
           phone: phone,
           email: email,
-          membership_tier: tier,
+          membership_tier: resolvedTier,
           wellness_formula: finalFormula,
           primary_goals: selectedGoals,
           health_notes: healthNotes,
+          addons: selectedAddonsList, // Save selected add-ons array to Supabase
           updated_at: new Date().toISOString(),
         });
 
@@ -216,13 +241,13 @@ function CheckoutPage() {
             Thank You!
           </h1>
           <p className="mt-4 text-lg text-gray-600 max-w-xl mx-auto">
-            {tier
+            {resolvedTier
               ? `Your registration for ${selectedTier?.name} is complete! We have emailed you a Concierge Wellness Care Welcome Package. Check your phone shortly for SMS updates.`
               : "Your order has been placed. A confirmation email is on its way to you."}
           </p>
           <Button asChild className="mt-8 bg-olive-600 hover:bg-olive-700">
-            <Link to={tier ? "/intake" : "/shop"} search={{}}>
-              {tier ? "Continue to Intake" : "Continue Shopping"}
+            <Link to={resolvedTier ? "/intake" : "/shop"} search={{}}>
+              {resolvedTier ? "Continue to Intake" : "Continue Shopping"}
             </Link>
           </Button>
         </div>
@@ -235,7 +260,7 @@ function CheckoutPage() {
       <div className="bg-olive-50">
         <div className="container mx-auto px-4 py-12 text-center">
           <h1 className="text-5xl font-cormorant font-bold text-olive-700">
-            {tier ? "Membership Registration" : "Checkout"}
+            {resolvedTier ? "Membership Registration" : "Checkout"}
           </h1>
         </div>
       </div>
@@ -279,13 +304,13 @@ function CheckoutPage() {
                   <Input
                     id="phone"
                     type="tel"
-                    required={!!tier}
+                    required={!!resolvedTier}
                     value={phone}
                     onChange={(e) => setPhone(e.target.value)}
                     placeholder="+1 (555) 123-4567"
                   />
                 </div>
-                {tier && !user && (
+                {resolvedTier && !user && (
                   <div className="md:col-span-2 mt-2 p-4 bg-olive-50/50 rounded-xl border border-olive-100">
                     <Label htmlFor="password">Create Account Password</Label>
                     <Input
@@ -306,7 +331,7 @@ function CheckoutPage() {
             </div>
 
             {/* Concierge Intake Questionnaire (Only if Tier selected) */}
-            {tier && (
+            {resolvedTier && (
               <div className="bg-amber-50/40 p-6 rounded-2xl border border-amber-200/60 shadow-[0_4px_20px_rgba(217,119,6,0.03)]">
                 <h2 className="text-2xl font-cormorant font-bold text-olive-800 mb-2">
                   Concierge Wellness Intake
@@ -558,6 +583,21 @@ function CheckoutPage() {
                 </div>
               )}
 
+              {/* Selected Addon Services */}
+              {selectedAddonsList.map((addonName) => {
+                const addonPrice = ADDON_PRICES[addonName] ?? 0;
+                return (
+                  <div key={addonName} className="flex items-start gap-3 p-3 rounded-xl bg-amber-50/40 border border-amber-100/50">
+                    <div className="text-xl mt-0.5">✨</div>
+                    <div className="flex-1 min-w-0">
+                      <p className="font-semibold text-stone-800 leading-snug text-xs">{addonName}</p>
+                      <p className="text-[10px] text-amber-800 font-medium">Additional Service</p>
+                    </div>
+                    <p className="font-semibold text-stone-800 text-xs">${addonPrice.toFixed(2)}</p>
+                  </div>
+                );
+              })}
+
               {/* Cart Products */}
               {cart.map((item) => (
                 <div key={item.product.id} className="flex items-center gap-4">
@@ -619,7 +659,7 @@ function CheckoutPage() {
             >
               {isSubmitting
                 ? "Processing..."
-                : tier
+                : resolvedTier
                   ? "Complete Registration"
                   : "Place Order"}
             </Button>

@@ -331,11 +331,11 @@ export function StoriesSection() {
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-12">
-          <p className="text-xs uppercase tracking-[0.35em] text-olive-500 mb-3">Community</p>
-          <h2 className="text-4xl md:text-5xl font-cormorant font-bold text-olive-800 mb-4">
+          <p className="text-xs uppercase tracking-[0.35em] text-olive-600 mb-3">Community</p>
+          <h2 className="text-5xl sm:text-7xl md:text-8xl font-cormorant font-bold text-stone-900 mb-4 tracking-tight leading-none">
             Stories & Milestones
           </h2>
-          <p className="text-stone-600 max-w-2xl mx-auto">
+          <p className="text-stone-600 max-w-2xl mx-auto mt-4 text-sm sm:text-base leading-relaxed">
             Real journeys from our Grandma's Herbals community. Share your progress, celebrate milestones,
             and inspire others on their wellness path.
           </p>

@@ -127,13 +127,13 @@ function Shop() {
 
   return (
     <SiteLayout>
-      <section className="bg-gradient-to-b from-olive-100 to-stone-50">
-        <div className="container mx-auto px-4 py-14 text-center md:py-16">
-          <p className="text-xs uppercase tracking-[0.35em] text-olive-500">Shop</p>
-          <h1 className="mt-3 text-4xl font-cormorant font-bold text-olive-800 md:text-6xl">
+      <section className="bg-gradient-to-b from-[#FAF8F5] to-stone-50 py-16 sm:py-24">
+        <div className="container mx-auto px-4 text-center">
+          <p className="text-xs uppercase tracking-[0.35em] text-olive-600">Shop</p>
+          <h1 className="mt-4 text-5xl sm:text-7xl md:text-8xl font-cormorant font-bold text-stone-900 tracking-tight leading-none">
             Our Apothecary
           </h1>
-          <p className="mx-auto mt-4 max-w-3xl text-base leading-7 text-stone-600 md:text-lg">
+          <p className="mx-auto mt-6 max-w-3xl text-sm sm:text-base leading-relaxed text-stone-600">
             Discover curated botanical collections, wellness blends, scent stories, and branded
             merchandise, all presented with intention and clean structure.
           </p>

@@ -208,87 +208,114 @@ export function Hero() {
           <CarouselContent className="m-0">
             {slides.map((slide, index) => (
               <CarouselItem key={slide.id} className="p-0">
-                <div className="relative w-full h-[560px] sm:h-[640px] md:h-[680px] lg:h-[720px] overflow-hidden bg-stone-950">
-                  {/* Media (Image or Video) - Full Background */}
-                  <div className="absolute inset-0 w-full h-full z-0">
-                    {slide.type === "video" ? (
-                      <video
-                        ref={(el) => {
-                          videoRefs.current[index] = el;
+                <div className="flex flex-col w-full bg-cream-100">
+                  {/* Media Viewport Container - Full Page Height */}
+                  <div className="relative w-full h-[80vh] min-h-[520px] max-h-[750px] overflow-hidden bg-stone-950">
+                    {/* Media (Image or Video) - Full Background */}
+                    <div className="absolute inset-0 w-full h-full z-0">
+                      {slide.type === "video" ? (
+                        <video
+                          ref={(el) => {
+                            videoRefs.current[index] = el;
+                          }}
+                          className="h-full w-full object-cover"
+                          muted
+                          playsInline
+                          preload="metadata"
+                          onEnded={() => api?.scrollNext()}
+                        >
+                          <source src={slide.media} type="video/mp4" />
+                        </video>
+                      ) : (
+                        <img
+                          src={slide.media}
+                          alt={slide.alt}
+                          className="h-full w-full object-cover"
+                          loading="eager"
+                          onError={(event) => {
+                            event.currentTarget.style.display = "none";
+                          }}
+                        />
+                      )}
+                    </div>
+
+                    {/* Dark overlay for cinema look and title readability */}
+                    <div className="absolute inset-0 bg-stone-950/45 z-[2]" />
+
+                    {/* Centered Large Title Overlay */}
+                    <div className="absolute inset-0 flex flex-col items-center justify-center z-[5] text-center px-4 md:px-8">
+                      <motion.div
+                        variants={{
+                          hidden: { opacity: 0 },
+                          visible: {
+                            opacity: 1,
+                            transition: {
+                              staggerChildren: 0.18,
+                              delayChildren: 0.1,
+                            },
+                          },
                         }}
-                        className="h-full w-full object-cover"
-                        muted
-                        playsInline
-                        preload="metadata"
-                        onEnded={() => api?.scrollNext()}
+                        initial="hidden"
+                        animate={index === current ? "visible" : "hidden"}
+                        className="flex flex-col items-center max-w-5xl"
                       >
-                        <source src={slide.media} type="video/mp4" />
-                      </video>
-                    ) : (
-                      <img
-                        src={slide.media}
-                        alt={slide.alt}
-                        className="h-full w-full object-cover"
-                        loading="eager"
-                        onError={(event) => {
-                          event.currentTarget.style.display = "none";
-                        }}
-                      />
-                    )}
+                        <motion.div
+                          variants={{
+                            hidden: { opacity: 0, y: 30 },
+                            visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
+                          }}
+                          className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/20 bg-stone-950/30 backdrop-blur-md px-3.5 py-1 text-[9px] sm:text-xs font-semibold uppercase tracking-[0.25em] text-white shadow-sm"
+                        >
+                          <slide.icon className="h-3.5 w-3.5 text-olive-300" />
+                          <span>{slide.eyebrow}</span>
+                        </motion.div>
+
+                        <motion.h1 
+                          variants={{
+                            hidden: { opacity: 0, y: 40 },
+                            visible: { opacity: 1, y: 0, transition: { duration: 0.9, ease: "easeOut" } },
+                          }}
+                          className="font-cormorant text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight text-white leading-[1.05] drop-shadow-[0_4px_16px_rgba(0,0,0,0.5)]"
+                        >
+                          {slide.title}
+                        </motion.h1>
+
+                        {slide.subtitle && (
+                          <motion.p 
+                            variants={{
+                              hidden: { opacity: 0, y: 20 },
+                              visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
+                            }}
+                            className="mt-4 text-[10px] sm:text-xs md:text-sm font-semibold uppercase tracking-[0.22em] text-white/90 drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)] max-w-xl"
+                          >
+                            {slide.subtitle}
+                          </motion.p>
+                        )}
+                      </motion.div>
+                    </div>
                   </div>
 
-                  {/* Gradient Overlay - Only at bottom for card area */}
-                  <div className="absolute inset-x-0 bottom-0 h-48 bg-gradient-to-t from-stone-950/90 via-stone-950/50 to-transparent z-[2]" />
-
-                  {/* Content Card - Positioned at bottom, more compact */}
-                  <div className="absolute bottom-0 left-0 right-0 z-[15] w-full px-3 sm:px-6 md:px-12 lg:px-24 pb-4 sm:pb-6">
-                    <motion.div
-                      initial={{ opacity: 0, y: 30 }}
-                      animate={index === current ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-                      transition={{ duration: 0.65, ease: "easeOut" }}
-                      className="w-full max-w-4xl bg-stone-900/40 backdrop-blur-sm border border-white/30 shadow-2xl rounded-2xl p-4 sm:p-5 md:p-6 text-white mx-auto"
-                    >
-                      <div className="mb-2 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-2.5 py-0.5 text-[8px] sm:text-[10px] font-semibold uppercase tracking-[0.25em] text-white shadow-sm">
-                        <slide.icon className="h-3 w-3" />
-                        <span>{slide.eyebrow}</span>
-                      </div>
-
-                      <motion.h1 
-                        initial={{ opacity: 0, x: 40 }}
-                        animate={index === current ? { opacity: 1, x: 0 } : { opacity: 0, x: -40 }}
-                        transition={{ duration: 0.8, type: "spring", bounce: 0.4, delay: 0.2 }}
-                        className="max-w-2xl text-xl sm:text-3xl md:text-4xl lg:text-5xl font-cormorant font-bold tracking-tight text-white leading-[1.1]"
-                      >
-                        {slide.title}
-                      </motion.h1>
-
-                      {/* White Subtitle - Moved outside the box */}
-                      <motion.p 
-                        initial={{ opacity: 0, x: 40 }}
-                        animate={index === current ? { opacity: 1, x: 0 } : { opacity: 0, x: -40 }}
-                        transition={{ duration: 0.8, type: "spring", bounce: 0.4, delay: 0.3 }}
-                        className="mt-2 text-[10px] sm:text-xs font-bold uppercase tracking-[0.2em] text-white/95"
-                      >
-                        {slide.subtitle}
-                      </motion.p>
-
-                      {/* Numbered Feature Cards - Box made smaller and optimized for mobile */}
+                  {/* Text Details Area - Rendered below the slide cover, sliding horizontally */}
+                  <div className="w-full bg-[#FAF8F5] py-8 sm:py-10 px-4 sm:px-6 md:px-8 border-t border-stone-200/80">
+                    <div className="max-w-4xl mx-auto flex flex-col items-center text-center">
+                      
+                      {/* Numbered Feature Cards */}
                       <motion.div 
                         initial={{ opacity: 0, y: 20 }}
                         animate={index === current ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                        transition={{ duration: 0.6, ease: "easeOut", delay: 0.4 }}
-                        className="mt-3 sm:mt-4 rounded-xl border border-white/10 bg-white/5 p-1.5 sm:p-2 shadow-inner"
+                        transition={{ duration: 0.7, ease: "easeOut", delay: 0.2 }}
+                        className="w-full rounded-2xl border border-stone-200/80 bg-white p-4 sm:p-5 shadow-sm"
                       >
-                        <div className="grid gap-1.5 grid-cols-2 md:grid-cols-4">
+                        <div className="grid gap-3 grid-cols-2 md:grid-cols-4">
                           {slide.features.slice(0, 4).map((feature, featureIndex) => (
                             <div
                               key={feature}
-                              className="flex items-center gap-1.5 rounded-lg border border-white/5 bg-white/10 px-2 py-1.5 shadow-sm min-w-0"
+                              className="flex items-center gap-2 rounded-xl border border-stone-100 bg-stone-50/50 px-3 py-2.5 shadow-sm min-w-0"
                             >
-                              <span className="flex h-4 w-4 sm:h-5 sm:w-5 shrink-0 items-center justify-center rounded-full bg-olive-800 text-[8px] sm:text-[9px] font-bold text-olive-200">
+                              <span className="flex h-5.5 w-5.5 shrink-0 items-center justify-center rounded-full bg-olive-600 text-[10px] font-bold text-white shadow-sm">
                                 0{featureIndex + 1}
                               </span>
-                              <span className="text-[9px] sm:text-[10px] font-semibold text-stone-100 truncate">{feature}</span>
+                              <span className="text-[11px] sm:text-xs font-semibold text-stone-800 truncate">{feature}</span>
                             </div>
                           ))}
                         </div>
@@ -298,49 +325,53 @@ export function Hero() {
                       <motion.div 
                         initial={{ opacity: 0, y: 20 }}
                         animate={index === current ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                        transition={{ duration: 0.6, ease: "easeOut", delay: 0.5 }}
-                        className="mt-3 sm:mt-4 flex flex-col gap-2 sm:flex-row"
+                        transition={{ duration: 0.7, ease: "easeOut", delay: 0.3 }}
+                        className="mt-6 flex flex-col sm:flex-row gap-3 justify-center w-full max-w-md"
                       >
                         <Button
                           asChild
-                          className="bg-olive-600 px-4 sm:px-6 text-white shadow-lg shadow-olive-900/10 transition-transform duration-200 hover:-translate-y-0.5 hover:bg-olive-700 text-[10px] sm:text-xs font-semibold h-8 sm:h-9"
+                          className="bg-olive-600 hover:bg-olive-700 text-white rounded-full px-8 py-5 shadow-lg shadow-olive-900/10 transition-transform duration-200 hover:-translate-y-0.5 text-xs font-semibold"
                         >
                           <Link to={slide.primaryCta.to}>
                             {slide.primaryCta.label}
-                            <ArrowRight className="ml-1 h-3 w-3" />
+                            <ArrowRight className="ml-1.5 h-4 w-4" />
                           </Link>
                         </Button>
                         {slide.secondaryCta ? (
                           <Button
                             asChild
                             variant="outline"
-                            className="border-white/30 bg-white/10 px-4 sm:px-6 text-white transition-transform duration-200 hover:-translate-y-0.5 hover:bg-white/20 text-[10px] sm:text-xs font-semibold h-8 sm:h-9"
+                            className="border-stone-300 bg-white hover:bg-stone-50 text-stone-800 rounded-full px-8 py-5 transition-transform duration-200 hover:-translate-y-0.5 text-xs font-semibold"
                           >
                             <Link to={slide.secondaryCta.to}>{slide.secondaryCta.label}</Link>
                           </Button>
                         ) : null}
                       </motion.div>
 
-                      {/* White description text at BOTTOM */}
+                      {/* Description text at bottom */}
                       <motion.p 
                         initial={{ opacity: 0 }}
                         animate={index === current ? { opacity: 1 } : { opacity: 0 }}
-                        transition={{ duration: 0.5, delay: 0.6 }}
-                        className="mt-3 sm:mt-4 max-w-2xl text-[10px] sm:text-xs font-medium text-white/90 tracking-wide leading-relaxed border-t border-white/10 pt-2 sm:pt-3"
+                        transition={{ duration: 0.6, delay: 0.4 }}
+                        className="mt-6 text-xs sm:text-sm font-medium text-stone-600 tracking-wide leading-relaxed max-w-2xl border-t border-stone-200/60 pt-4"
                       >
                         {slide.description}
                       </motion.p>
-                    </motion.div>
+                    </div>
                   </div>
                 </div>
               </CarouselItem>
             ))}
           </CarouselContent>
 
-          <CarouselPrevious className="hidden md:flex left-4 lg:left-8 border-white/40 bg-white/70 text-olive-800 shadow-lg backdrop-blur hover:bg-white z-[25]" />
-          <CarouselNext className="hidden md:flex right-4 lg:right-8 border-white/40 bg-white/70 text-olive-800 shadow-lg backdrop-blur hover:bg-white z-[25]" />
+          {/* Carousel Next/Prev Controls - Floating relative to media viewport */}
+          <div className="absolute inset-x-0 top-[40%] flex justify-between px-4 sm:px-6 pointer-events-none z-[10]">
+            <CarouselPrevious className="pointer-events-auto border-white/20 bg-white/80 hover:bg-white text-olive-800 shadow-md backdrop-blur-md" />
+            <CarouselNext className="pointer-events-auto border-white/20 bg-white/80 hover:bg-white text-olive-800 shadow-md backdrop-blur-md" />
+          </div>
 
-          <div className="absolute bottom-4 left-1/2 z-[25] flex -translate-x-1/2 gap-2 md:bottom-8">
+          {/* Dots Indicator overlaying the media bottom area */}
+          <div className="absolute top-[75vh] left-1/2 z-[10] flex -translate-x-1/2 gap-2">
             {slides.map((_, index) => (
               <button
                 key={index}

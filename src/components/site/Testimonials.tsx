@@ -66,13 +66,13 @@ export function Testimonials() {
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-12">
-          <p className="text-xs uppercase tracking-[0.35em] text-olive-500 mb-3">
+          <p className="text-xs uppercase tracking-[0.35em] text-olive-600 mb-3">
             Customer Stories
           </p>
-          <h2 className="text-4xl md:text-5xl font-cormorant font-bold text-olive-800 mb-4">
+          <h2 className="text-5xl sm:text-7xl md:text-8xl font-cormorant font-bold text-stone-900 mb-4 tracking-tight leading-none">
             What Our Community is Saying
           </h2>
-          <p className="text-base text-stone-600 max-w-2xl mx-auto">
+          <p className="text-sm sm:text-base text-stone-600 max-w-2xl mx-auto mt-4 leading-relaxed">
             Real stories from real customers. Share your experience and help others discover the
             benefits of natural wellness.
           </p>
