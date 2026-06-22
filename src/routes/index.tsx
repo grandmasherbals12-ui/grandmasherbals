@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { Hero } from "@/components/site/Hero";
+import { IntroductionSection } from "@/components/site/IntroductionSection";
 import { FeaturedProducts } from "@/components/site/FeaturedProducts";
 import { MembershipSection } from "@/components/site/MembershipSection";
 import { ConsultationSection } from "@/components/site/ConsultationSection";
@@ -26,7 +27,10 @@ function Index() {
       {/* 1. Hero Slideshow Section */}
       <Hero />
 
-      {/* 2. Shop (Featured Products) Section with clean transition */}
+      {/* 2. Introduction & Philosophy Section */}
+      <IntroductionSection />
+
+      {/* 3. Shop (Featured Products) Section with clean transition */}
       <div className="bg-white border-t border-stone-200/50">
         <FeaturedProducts />
       </div>

@@ -79,20 +79,6 @@ const slides = [
     primaryCta: { label: "Join Membership", to: "/membership" },
     icon: Sparkles,
   },
-  {
-    id: 6,
-    type: "image" as const,
-    media: "/carousel-1.png",
-    alt: "Wellness botanical scene",
-    eyebrow: "Community Wellness",
-    title: "Feel Better. Live Better. Thrive Naturally.",
-    subtitle: "A growing community embracing a natural path to vitality.",
-    description: "Join a growing community embracing a natural path toward vitality, balance, and lifelong wellness.",
-    features: ["Shop the collection", "Join membership", "Book support", "Grow with us"],
-    primaryCta: { label: "Shop Now", to: "/shop" },
-    secondaryCta: { label: "Join Membership", to: "/membership" },
-    icon: ArrowRight,
-  },
 ];
 
 export function Hero() {
@@ -239,8 +225,8 @@ export function Hero() {
                       )}
                     </div>
 
-                    {/* Dark overlay for cinema look and title readability */}
-                    <div className="absolute inset-0 bg-stone-950/45 z-[2]" />
+                    {/* Dark overlay for cinema look and title readability, updated for more vivid colors */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-stone-950/70 via-stone-950/20 to-transparent z-[2]" />
 
                     {/* Centered Large Title Overlay */}
                     <div className="absolute inset-0 flex flex-col items-center justify-center z-[5] text-center px-4 md:px-8">
@@ -261,8 +247,17 @@ export function Hero() {
                       >
                         <motion.div
                           variants={{
-                            hidden: { opacity: 0, y: 30 },
-                            visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
+                            hidden: { opacity: 0, y: 30, scale: 0.95 },
+                            visible: { 
+                              opacity: 1, 
+                              y: [0, -5, 0], 
+                              scale: 1,
+                              transition: { 
+                                opacity: { duration: 0.8, ease: "easeOut" },
+                                y: { duration: 6, repeat: Infinity, ease: "easeInOut" },
+                                scale: { duration: 0.8, ease: "easeOut" }
+                              } 
+                            },
                           }}
                           className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/20 bg-stone-950/30 backdrop-blur-md px-3.5 py-1 text-[9px] sm:text-xs font-semibold uppercase tracking-[0.25em] text-white shadow-sm"
                         >
@@ -272,8 +267,17 @@ export function Hero() {
 
                         <motion.h1 
                           variants={{
-                            hidden: { opacity: 0, y: 40 },
-                            visible: { opacity: 1, y: 0, transition: { duration: 0.9, ease: "easeOut" } },
+                            hidden: { opacity: 0, y: 40, filter: "blur(10px)" },
+                            visible: { 
+                              opacity: 1, 
+                              y: [0, -10, 0], 
+                              filter: "blur(0px)",
+                              transition: { 
+                                opacity: { duration: 0.9, ease: "easeOut" },
+                                filter: { duration: 0.9, ease: "easeOut" },
+                                y: { duration: 8, repeat: Infinity, ease: "easeInOut", delay: 0.2 }
+                              } 
+                            },
                           }}
                           className="font-cormorant text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight text-white leading-[1.05] drop-shadow-[0_4px_16px_rgba(0,0,0,0.5)]"
                         >
@@ -284,7 +288,14 @@ export function Hero() {
                           <motion.p 
                             variants={{
                               hidden: { opacity: 0, y: 20 },
-                              visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: "easeOut" } },
+                              visible: { 
+                                opacity: 1, 
+                                y: [0, -5, 0], 
+                                transition: { 
+                                  opacity: { duration: 0.8, ease: "easeOut" },
+                                  y: { duration: 7, repeat: Infinity, ease: "easeInOut", delay: 0.4 }
+                                } 
+                              },
                             }}
                             className="mt-4 text-[10px] sm:text-xs md:text-sm font-semibold uppercase tracking-[0.22em] text-white/90 drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)] max-w-xl"
                           >
