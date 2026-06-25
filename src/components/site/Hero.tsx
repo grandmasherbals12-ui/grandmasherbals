@@ -11,6 +11,12 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const slides = [
   {
@@ -23,8 +29,8 @@ const slides = [
     subtitle: "Rejuvenating",
     description: "mind. body. spirit. soul",
     features: ["Integrative Wellness", "Regenerative Living", "Natural & Organic", "Wholistic Well-Being"],
-    primaryCta: { label: "Begin Your Wellness Journey", to: "/assessment" },
-    secondaryCta: { label: "Discover Our Story", to: "/about" },
+    primaryCta: { label: "Begin Your Wellness Journey", to: "/assessment", tooltip: "Start your personalized wellness assessment" },
+    secondaryCta: { label: "Discover Our Story", to: "/about", tooltip: "Learn more about our wellness approach" },
     icon: Sparkles,
   },
   {
@@ -37,7 +43,7 @@ const slides = [
     subtitle: "Grown in nature.",
     description: "Guided by Wisdom.",
     features: ["Personalized Recommendations", "Lifestyle Support", "Herbal Guidance", "Smart Wellness Support"],
-    primaryCta: { label: "Explore Consultations", to: "/consultation" },
+    primaryCta: { label: "Explore Consultations", to: "/consultation", tooltip: "Book a 1-on-1 wellness session" },
     icon: HeartPulse,
   },
   {
@@ -50,7 +56,7 @@ const slides = [
     subtitle: "Restore resilience, energy, and mobility.",
     description: "Discover wellness strategies focused on restoration, resilience, recovery, circulation, energy, mobility, and long-term vitality.",
     features: ["Recovery Support", "Energy & Vitality", "Active Lifestyle", "Healthy Aging Focus"],
-    primaryCta: { label: "Learn More", to: "/about" },
+    primaryCta: { label: "Learn More", to: "/about", tooltip: "Discover restorative wellness strategies" },
     icon: Infinity,
   },
   {
@@ -63,7 +69,7 @@ const slides = [
     subtitle: "Premium botanicals with modern wellness insight.",
     description: "Premium botanicals, traditional herbal knowledge, and modern wellness insights combined to help support your everyday health goals.",
     features: ["Organic Ingredients", "Small Batch Formulas", "Quality Focused", "Naturally Inspired"],
-    primaryCta: { label: "Shop Botanicals", to: "/shop" },
+    primaryCta: { label: "Shop Botanicals", to: "/shop", tooltip: "Browse our premium botanical products" },
     icon: Leaf,
   },
   {
@@ -76,7 +82,7 @@ const slides = [
     subtitle: "Well-being that supports the whole person.",
     description: "True wellness supports emotional wellness, mental clarity, personal growth, and overall well-being. Our wholistic approach supports the whole person.",
     features: ["Meditation Support", "Stress Management", "Wellness Coaching", "Guided Resources"],
-    primaryCta: { label: "Join Membership", to: "/membership" },
+    primaryCta: { label: "Join Membership", to: "/membership", tooltip: "Become a member for exclusive content" },
     icon: Sparkles,
   },
 ];
@@ -181,8 +187,9 @@ export function Hero() {
   }, [current, api]);
 
   return (
-    <section className="relative w-full overflow-hidden bg-cream-100">
-      <div className="relative w-full overflow-hidden">
+    <TooltipProvider delayDuration={200}>
+      <section className="relative w-full overflow-hidden bg-cream-100">
+        <div className="relative w-full overflow-hidden">
         <Carousel
           setApi={setApi}
           className="w-full"
@@ -339,23 +346,38 @@ export function Hero() {
                         transition={{ duration: 0.7, ease: "easeOut", delay: 0.3 }}
                         className="mt-6 flex flex-col sm:flex-row gap-3 justify-center w-full max-w-md"
                       >
-                        <Button
-                          asChild
-                          className="bg-olive-600 hover:bg-olive-700 text-white rounded-full px-8 py-5 shadow-lg shadow-olive-900/10 transition-transform duration-200 hover:-translate-y-0.5 text-xs font-semibold"
-                        >
-                          <Link to={slide.primaryCta.to}>
-                            {slide.primaryCta.label}
-                            <ArrowRight className="ml-1.5 h-4 w-4" />
-                          </Link>
-                        </Button>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <Button
+                              asChild
+                              className="bg-olive-600 hover:bg-olive-700 text-white rounded-full px-8 py-5 shadow-lg shadow-olive-900/10 transition-transform duration-200 hover:-translate-y-0.5 text-xs font-semibold"
+                            >
+                              <Link to={slide.primaryCta.to}>
+                                {slide.primaryCta.label}
+                                <ArrowRight className="ml-1.5 h-4 w-4" />
+                              </Link>
+                            </Button>
+                          </TooltipTrigger>
+                          <TooltipContent className="bg-olive-900 text-white border-none font-medium px-4 py-2">
+                            <p>{slide.primaryCta.tooltip}</p>
+                          </TooltipContent>
+                        </Tooltip>
+                        
                         {slide.secondaryCta ? (
-                          <Button
-                            asChild
-                            variant="outline"
-                            className="border-stone-300 bg-white hover:bg-stone-50 text-stone-800 rounded-full px-8 py-5 transition-transform duration-200 hover:-translate-y-0.5 text-xs font-semibold"
-                          >
-                            <Link to={slide.secondaryCta.to}>{slide.secondaryCta.label}</Link>
-                          </Button>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <Button
+                                asChild
+                                variant="outline"
+                                className="border-stone-300 bg-white hover:bg-stone-50 text-stone-800 rounded-full px-8 py-5 transition-transform duration-200 hover:-translate-y-0.5 text-xs font-semibold"
+                              >
+                                <Link to={slide.secondaryCta.to}>{slide.secondaryCta.label}</Link>
+                              </Button>
+                            </TooltipTrigger>
+                            <TooltipContent className="bg-stone-800 text-white border-none font-medium px-4 py-2">
+                              <p>{slide.secondaryCta.tooltip}</p>
+                            </TooltipContent>
+                          </Tooltip>
                         ) : null}
                       </motion.div>
 
@@ -397,5 +419,6 @@ export function Hero() {
         </Carousel>
       </div>
     </section>
+    </TooltipProvider>
   );
 }

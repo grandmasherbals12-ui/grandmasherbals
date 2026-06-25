@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { CheckCircle2 } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -242,9 +243,12 @@ export function ConsultationSection({ showHeader = true }: { showHeader?: boolea
                 {isSubmitting ? "SUBMITTING..." : "BOOK A CONSULTATION"}
               </Button>
               {!isAuthenticated && (
-                <p className="text-center text-xs text-amber-700 font-semibold bg-amber-50 rounded-xl p-3 border border-amber-100 mt-2">
+                <Link 
+                  to="/account" 
+                  className="block text-center text-xs text-amber-700 font-semibold bg-amber-50 hover:bg-amber-100 transition-colors rounded-xl p-3 border border-amber-100 mt-2"
+                >
                   * Note: Please register or log in first to submit your booking.
-                </p>
+                </Link>
               )}
             </form>
           </div>
