@@ -135,3 +135,72 @@ input::-ms-reveal,
 input::-ms-clear {
   display: none;
 }
+
+/* ── Color Blind Accessibility Palettes ── */
+
+/* Protanopia — Red-blind: Olive greens become blue tones */
+.cb-protanopia {
+  --olive-100: 210 25% 95%;
+  --olive-200: 210 25% 88%;
+  --olive-300: 210 30% 72%;
+  --olive-400: 210 35% 52%;
+  --olive-500: 210 40% 40%;
+  --olive-600: 210 42% 32%;
+  --olive-700: 210 45% 22%;
+  --cream: 42 55% 95%;
+  --cream-100: 42 55% 97%;
+}
+
+/* Deuteranopia — Green-blind: Olive greens become warm amber/brown */
+.cb-deuteranopia {
+  --olive-100: 40 30% 95%;
+  --olive-200: 40 30% 88%;
+  --olive-300: 40 35% 72%;
+  --olive-400: 40 40% 52%;
+  --olive-500: 40 45% 38%;
+  --olive-600: 40 50% 28%;
+  --olive-700: 40 55% 20%;
+  --cream: 45 60% 95%;
+  --cream-100: 45 60% 97%;
+}
+
+/* Tritanopia — Blue-yellow blind: Olive greens become warm rose/mauve */
+.cb-tritanopia {
+  --olive-100: 330 20% 95%;
+  --olive-200: 330 22% 88%;
+  --olive-300: 330 25% 72%;
+  --olive-400: 330 30% 52%;
+  --olive-500: 330 35% 40%;
+  --olive-600: 330 38% 30%;
+  --olive-700: 330 42% 22%;
+  --cream: 15 45% 95%;
+  --cream-100: 15 45% 97%;
+}
+
+/* High Contrast — Maximum readability for all users */
+.cb-high-contrast {
+  --olive-100: 0 0% 95%;
+  --olive-200: 0 0% 85%;
+  --olive-300: 0 0% 65%;
+  --olive-400: 0 0% 40%;
+  --olive-500: 0 0% 25%;
+  --olive-600: 0 0% 15%;
+  --olive-700: 0 0% 8%;
+  --cream: 0 0% 97%;
+  --cream-100: 0 0% 99%;
+  --background: 0 0% 100%;
+  --foreground: 0 0% 5%;
+  --border: 0 0% 30%;
+  --primary: 0 0% 12%;
+  --primary-foreground: 0 0% 100%;
+}
+
+.cb-high-contrast * {
+  border-color: hsl(0 0% 30%) !important;
+}
+
+.cb-high-contrast img,
+.cb-high-contrast video {
+  filter: contrast(1.15);
+}
+

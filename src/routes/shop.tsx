@@ -13,19 +13,14 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
-import { ChevronRight } from "lucide-react";
 import { CollectionShowcase } from "@/components/site/CollectionShowcase";
 import {
-  berryBalanceSection,
-  boomMaxSection,
   citrusRestoreSection,
   dailyHydrateSection,
-  herbalIvSection,
-  merchandiseImages,
-  notTodaySections,
-  peachFlowSection,
-  scentSections,
   tropicalReviveSection,
+  berryBalanceSection,
+  merchandiseImages,
+  scentSections,
 } from "@/lib/shop-content";
 
 export const Route = createFileRoute("/shop")({
@@ -79,29 +74,19 @@ function Shop() {
     if (sort === "rating") list = [...list].sort((a, b) => b.rating - a.rating);
     return list;
   }, [cat, q, sort]);
+
+  // Exclude candles from the "rest of store" grid since they get their own showcase
   const restOfStore = filtered.filter(
     (product) =>
       ![
-        "Herbal IV",
-        "Not Today",
-        "Boom Max",
-        "Peach Flow",
         "Frankincense Ylang Vanilla Candle",
         "Citrus Magnolia Lime Candle",
         "Clove Rose Lemon Candle",
         "Mint Cinnamon Lavender Candle",
       ].includes(product.name),
   );
+
   const browseProducts = useMemo(() => {
-    if (browse === "adult-enhancement") {
-      return products.filter((product) => ["Boom Max", "Peach Flow"].includes(product.name));
-    }
-    if (browse === "herbal-iv") {
-      return products.filter((product) => product.name === "Herbal IV");
-    }
-    if (browse === "not-today") {
-      return products.filter((product) => product.name === "Not Today");
-    }
     if (browse === "products") {
       return restOfStore;
     }
@@ -195,13 +180,7 @@ function Shop() {
               <div>
                 <p className="text-xs uppercase tracking-[0.3em] text-olive-500">Browse Shop</p>
                 <h2 className="mt-2 text-3xl font-cormorant font-bold text-olive-800">
-                  {browse === "adult-enhancement"
-                    ? "Adult Enhancement & Performance"
-                    : browse === "herbal-iv"
-                      ? "Herbal IV"
-                      : browse === "not-today"
-                        ? "Not Today"
-                        : "Shop Products"}
+                  Shop Products
                 </h2>
                 <p className="mt-2 max-w-2xl text-sm leading-6 text-stone-600">
                   Browse the product cards directly instead of the editorial collection layout.
@@ -216,38 +195,10 @@ function Shop() {
           </div>
         ) : cat === "All" ? (
           <>
-            {renderShowcase(herbalIvSection)}
             {renderShowcase(tropicalReviveSection)}
             {renderShowcase(berryBalanceSection)}
             {renderShowcase(citrusRestoreSection)}
             {renderShowcase(dailyHydrateSection)}
-
-            <div className="mb-16">
-              <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-                <div>
-                  <p className="text-xs uppercase tracking-[0.3em] text-olive-500">Dedicated Collection</p>
-                  <h2 className="mt-2 text-3xl font-cormorant font-bold text-olive-800">NOT TODAY</h2>
-                  <p className="mt-2 max-w-2xl text-sm leading-6 text-stone-600">
-                    Ten focused wellness stories, each with its own image and content so the full
-                    Not Today range can be browsed one by one.
-                  </p>
-                </div>
-                <Button
-                  asChild
-                  variant="ghost"
-                  className="justify-start text-olive-700 hover:bg-olive-100 hover:text-olive-800 sm:justify-center"
-                >
-                  <Link to="/shop/not-today" search={{}}>
-                    View collection <ChevronRight className="ml-2 h-4 w-4" />
-                  </Link>
-                </Button>
-              </div>
-              <div className="space-y-4">
-                {notTodaySections.map(({ key, ...section }) => (
-                  <CollectionShowcase key={key} {...section} />
-                ))}
-              </div>
-            </div>
 
             <CollectionShowcase {...merchandiseSection} />
 
@@ -286,10 +237,6 @@ function Shop() {
                 </div>
               ) : null}
             </div>
-
-            {/* Adult Enhancement — shown last */}
-            {renderShowcase(boomMaxSection)}
-            {renderShowcase(peachFlowSection)}
           </>
         ) : (
           <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">

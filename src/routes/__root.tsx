@@ -8,6 +8,7 @@ import {
 import { CartProvider } from "@/lib/cart-context";
 import { AuthProvider } from "@/lib/auth-context";
 import { Toaster } from "@/components/ui/sonner";
+import { AccessibilityToggle } from "@/components/site/AccessibilityToggle";
 
 import appCss from "../styles.css?url";
 
@@ -77,6 +78,7 @@ function RootComponent() {
         <CartProvider>
           <Outlet />
           <Toaster />
+          <AccessibilityToggle />
         </CartProvider>
       </AuthProvider>
     </QueryClientProvider>
