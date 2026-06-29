@@ -413,6 +413,7 @@ export function Hero() {
                                 feature={feature}
                                 description={slide.featureDescriptions?.[featureIndex] || ""}
                                 index={featureIndex}
+                                isActiveSlide={index === current}
                               />
                             ))}
                           </div>
@@ -507,21 +508,29 @@ function FeatureTooltip({
   feature,
   description,
   index,
+  isActiveSlide,
 }: {
   feature: string;
   description: string;
   index: number;
+  isActiveSlide: boolean;
 }) {
   const [isHovered, setIsHovered] = useState(false);
+
+  useEffect(() => {
+    if (!isActiveSlide) {
+      setIsHovered(false);
+    }
+  }, [isActiveSlide]);
 
   return (
     <div
       className="relative"
-      onMouseEnter={() => setIsHovered(true)}
+      onMouseEnter={() => isActiveSlide && setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      onFocus={() => setIsHovered(true)}
+      onFocus={() => isActiveSlide && setIsHovered(true)}
       onBlur={() => setIsHovered(false)}
-      tabIndex={0}
+      tabIndex={isActiveSlide ? 0 : -1}
       role="button"
       aria-describedby={`feature-tooltip-${index}`}
     >
