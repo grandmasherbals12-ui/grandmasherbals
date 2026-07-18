@@ -45,7 +45,7 @@ CREATE POLICY "Anyone can read approved testimonials"
   USING (
     approved = true
     OR
-    (auth.jwt() ->> 'email' = 'admin@gmail.com')
+    (auth.jwt() ->> 'email' IN ('admin@gmail.com', 'grandmasherbals12@gmail.com'))
   );
 
 -- Policy B: Public INSERT — Anyone can submit a testimonial (no auth required)
@@ -58,13 +58,13 @@ CREATE POLICY "Anyone can submit testimonials"
 CREATE POLICY "Admin can update testimonials"
   ON video_testimonials FOR UPDATE
   TO authenticated
-  USING (auth.jwt() ->> 'email' = 'admin@gmail.com');
+  USING (auth.jwt() ->> 'email' IN ('admin@gmail.com', 'grandmasherbals12@gmail.com'));
 
 -- Policy D: Admin DELETE — Only admin can delete testimonials
 CREATE POLICY "Admin can delete testimonials"
   ON video_testimonials FOR DELETE
   TO authenticated
-  USING (auth.jwt() ->> 'email' = 'admin@gmail.com');
+  USING (auth.jwt() ->> 'email' IN ('admin@gmail.com', 'grandmasherbals12@gmail.com'));
 
 
 -- ==============================================
@@ -103,7 +103,7 @@ CREATE POLICY "Allow admin video deletes"
   USING (
     bucket_id = 'video-testimonials'
     AND
-    (auth.jwt() ->> 'email' = 'admin@gmail.com')
+    (auth.jwt() ->> 'email' IN ('admin@gmail.com', 'grandmasherbals12@gmail.com'))
   );
 
 -- ==============================================

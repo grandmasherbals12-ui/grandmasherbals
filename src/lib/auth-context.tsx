@@ -1,8 +1,8 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { supabase } from "./supabase";
 
-// Hardcoded admin email — always treated as admin regardless of DB
-const ADMIN_EMAIL = "admin@gmail.com";
+// Hardcoded admin emails — always treated as admin regardless of DB
+const ADMIN_EMAILS = ["admin@gmail.com", "grandmasherbals12@gmail.com"];
 
 export interface User {
   id: string;
@@ -37,9 +37,9 @@ async function fetchProfile(userId: string) {
   }
 }
 
-/** Determine if an email is the admin */
+/** Determine if an email is an admin */
 function isAdminEmail(email: string) {
-  return email.trim().toLowerCase() === ADMIN_EMAIL.toLowerCase();
+  return ADMIN_EMAILS.includes(email.trim().toLowerCase());
 }
 
 /** Build a User object — always gives admin role to the admin email */
