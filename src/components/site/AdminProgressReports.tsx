@@ -171,7 +171,7 @@ export function AdminProgressReports() {
               {entries.map((e) => (
                 <tr key={e.id} className="hover:bg-secondary/40">
                   <td className="px-5 py-4 font-medium">{e.entry_date}</td>
-                  <td className="px-5 py-4 text-muted-foreground text-xs">{e.member_id.slice(0, 8)}…</td>
+                  <td className="px-5 py-4 text-muted-foreground text-xs">{e.member_name || `${e.member_id.slice(0, 8)}…`}</td>
                   <td className="px-5 py-4">{e.avg_mood}%</td>
                   <td className="px-5 py-4">{e.avg_energy}%</td>
                   <td className="px-5 py-4">{e.avg_wellbeing}%</td>

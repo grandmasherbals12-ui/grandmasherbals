@@ -1,182 +1,26 @@
-1)here is my website link deployed now. https://grandmasstore.netlify.app
-2)Priority 1 — Fix Existing Bugs First
-These are items the client has already noticed.
-3)Mobile Testing
+ the typography should be automated. the slide show & 1st picture should be the tree . please remove slide show & seperate some of the pictures with contrasting solid background pages below the above some pictures mostly. 1st & 4 pictures the typography appear on picture but softly animated on top of picture after picture is 1.5 seconds after picture appears.
+1st the Hero line then 1 sec & the rest of the text.
 
-Client specifically requested:
+the goal is to make all pages available by scrolling the 1st page.
 
-adaptive for cell phone view on iphone when turned
+please let make this correct edits.
 
-Test:
+Also remove the slide show & just use the pictures & screen should scroll a little bit to let customer keep attention.
 
-Portrait
-Home
-Membership
-Checkout
-Intake
-Landscape
-Home
-Membership
-Reports
+before you made this edit the home screen allowed full scrolling. 
 
-Fix any overflow.
-1. Broken Email Link
+2)also i entered information as a new member and no report updated or shows in backend reports.
 
-Client said:
-superbad.io link
-it was a broken email when i clicked link
-Check
-Search entire project for:
-superbad.io
-mailto:
-support email
-contact email
-Test
-Footer email
-Contact page email
-Consultation email
-Welcome email links
-2. Header Navigation
+Also i created a daily health update & it did not populate in backend & no email report was sent out.
 
-Client said:
-need header connected
-Verify Every Header Item
-Logo → Home
-Phone icon → Call
-User icon → Login/Profile
-Cart icon → Cart
-Menu → Mobile Menu
-No dead links.
-3. Black Rock Image
+this needs to be corrected.
 
-Client explicitly said:
-black rock with plant picture is not resized to fit full screen yet
-Fix
-Remove card styling.
-Image should be:
-width: 100%;
-height: auto;
-display: block;
-Minimal padding.
+3)currently the typograph need it own contrasting page. please read earlier directions. 
 
-4. Overlay Text Not Showing
-Client said:
-slides text overlay not pushed yet
-Add
+use pictures tree roots 1st & not as a slide show. 
 
-Image 1:
-Bespoke Formulated Compounds
-Rejuvenating
-mind. body. spirit. soul
+make sure page moves softly to keep users attention.
 
-Image 2:
-Organic Wellness
-Grown in nature.
-Guided by Wisdom.
-Visible immediately.
-5. Compliance Pages
+also member sign in/sign up needs its own page & testimonial for video & comments needs its own page
 
-Client specifically requested:
-
-Create Pages
-Privacy Policy
-/privacy-policy
-Terms of Service
-/terms-of-service
-HIPAA Disclaimer
-/hipaa-disclaimer
-Medical Disclaimer
-/medical-disclaimer
-Liability Waiver
-
-Use the uploaded document as source content.- refer "beedhewder adjustGRANDMAS HERBALS LIABILITY WAIVER-1.docx" file.
-
-/liability-waiver
-6. Required Consent
-
-Client said:
-
-every person & membership sign up needs checkbox
-
-Before Checkout
-
-Add:
-
-☐ I agree to the:
-
-Privacy Policy
-Terms of Service
-HIPAA Disclaimer
-Medical Disclaimer
-Liability Waiver
-Button disabled until checked.
- 
- 7. FAQ Section
-
-Client requested:
-
-Conversion Optimization FAQ section
-
-Add 8–10 FAQs.
-
-Examples:
-
-What is Concierge Wellness?
-Is this medical treatment?
-How are recommendations created?
-Can I upload progress reports?
-How often do members receive support?
-Can I book consultations?
-
-8. Practitioner Dashboard MVP
-
-Do NOT build full CRM.
-
-Create admin area:
-
-Clients
-
-View clients.
-
-Intake Forms
-
-View submitted forms.
-
-Progress Reports
-
-View reports.
-
-Recommendations
-
-Upload notes.
-
-Follow Ups
-
-Schedule next appointment.
-
-Simple CRUD is enough.
-9. Report Generation
-
-Client keeps mentioning Felix/Todd reports.
-
-Create Button
-Generate Report
-
-Generate:
-
-Welcome Report
-Progress Report
-
-using existing templates.
-
-No AI needed yet.
-10. PDF Export
-
-Add:
-
-Export PDF
-
-to:
-
-Welcome Letter
-Progress Report
+please  make this changes without affecting other changs and make all work properly , importantly that report , welcome new user report , daily health update if user had subscribed & email and all should work perfectly.

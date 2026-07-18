@@ -116,13 +116,13 @@ export function Header() {
                 </div>
               </div>
             ) : (
-              <button
-                onClick={handleUserClick}
+              <Link
+                to="/sign-in"
                 aria-label="Sign In"
                 className="p-1.5 sm:p-2 text-olive-600 hover:text-olive-800 shrink-0"
               >
                 <User className="h-5 w-5" />
-              </button>
+              </Link>
             )}
 
             <Link

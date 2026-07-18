@@ -15,6 +15,7 @@ import { Route as TermsOfServiceRouteImport } from './routes/terms-of-service'
 import { Route as TechnologyRouteImport } from './routes/technology'
 import { Route as StoriesRouteImport } from './routes/stories'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as SignInRouteImport } from './routes/sign-in'
 import { Route as ShopRouteImport } from './routes/shop'
 import { Route as ProgressReportRouteImport } from './routes/progress-report'
 import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
@@ -65,6 +66,11 @@ const StoriesRoute = StoriesRouteImport.update({
 const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
   id: '/sitemap.xml',
   path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SignInRoute = SignInRouteImport.update({
+  id: '/sign-in',
+  path: '/sign-in',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ShopRoute = ShopRouteImport.update({
@@ -193,6 +199,7 @@ export interface FileRoutesByFullPath {
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/progress-report': typeof ProgressReportRouteWithChildren
   '/shop': typeof ShopRouteWithChildren
+  '/sign-in': typeof SignInRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/stories': typeof StoriesRoute
   '/technology': typeof TechnologyRoute
@@ -222,6 +229,7 @@ export interface FileRoutesByTo {
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/progress-report': typeof ProgressReportRouteWithChildren
   '/shop': typeof ShopRouteWithChildren
+  '/sign-in': typeof SignInRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/stories': typeof StoriesRoute
   '/technology': typeof TechnologyRoute
@@ -252,6 +260,7 @@ export interface FileRoutesById {
   '/privacy-policy': typeof PrivacyPolicyRoute
   '/progress-report': typeof ProgressReportRouteWithChildren
   '/shop': typeof ShopRouteWithChildren
+  '/sign-in': typeof SignInRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/stories': typeof StoriesRoute
   '/technology': typeof TechnologyRoute
@@ -283,6 +292,7 @@ export interface FileRouteTypes {
     | '/privacy-policy'
     | '/progress-report'
     | '/shop'
+    | '/sign-in'
     | '/sitemap.xml'
     | '/stories'
     | '/technology'
@@ -312,6 +322,7 @@ export interface FileRouteTypes {
     | '/privacy-policy'
     | '/progress-report'
     | '/shop'
+    | '/sign-in'
     | '/sitemap.xml'
     | '/stories'
     | '/technology'
@@ -341,6 +352,7 @@ export interface FileRouteTypes {
     | '/privacy-policy'
     | '/progress-report'
     | '/shop'
+    | '/sign-in'
     | '/sitemap.xml'
     | '/stories'
     | '/technology'
@@ -371,6 +383,7 @@ export interface RootRouteChildren {
   PrivacyPolicyRoute: typeof PrivacyPolicyRoute
   ProgressReportRoute: typeof ProgressReportRouteWithChildren
   ShopRoute: typeof ShopRouteWithChildren
+  SignInRoute: typeof SignInRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   StoriesRoute: typeof StoriesRoute
   TechnologyRoute: typeof TechnologyRoute
@@ -421,6 +434,13 @@ declare module '@tanstack/react-router' {
       path: '/sitemap.xml'
       fullPath: '/sitemap.xml'
       preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sign-in': {
+      id: '/sign-in'
+      path: '/sign-in'
+      fullPath: '/sign-in'
+      preLoaderRoute: typeof SignInRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/shop': {
@@ -615,6 +635,7 @@ const rootRouteChildren: RootRouteChildren = {
   PrivacyPolicyRoute: PrivacyPolicyRoute,
   ProgressReportRoute: ProgressReportRouteWithChildren,
   ShopRoute: ShopRouteWithChildren,
+  SignInRoute: SignInRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   StoriesRoute: StoriesRoute,
   TechnologyRoute: TechnologyRoute,

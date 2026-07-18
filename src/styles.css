@@ -98,6 +98,10 @@
 }
 
 /* Global Styles Configuration */
+html {
+  scroll-behavior: smooth;
+}
+
 * {
   @apply border-border;
 }

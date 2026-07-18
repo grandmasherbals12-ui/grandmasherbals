@@ -100,11 +100,32 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const { data, error } = await supabase.auth.signUp({ email, password });
     if (error) throw error;
     if (data.user) {
-      // Best-effort profile creation — don't block on it
+      // Best-effort profile creation in users table — don't block on it
       supabase.from("users").upsert(
         { id: data.user.id, email, full_name: fullName, role: isAdminEmail(email) ? "admin" : "user" },
         { onConflict: "id" }
       ).then(() => {}); // fire-and-forget
+
+      // Also create a member_profiles record so reports, welcome letters, and
+      // admin backend entries are properly linked to this new member.
+      supabase.from("member_profiles").upsert(
+        {
+          id: data.user.id,
+          full_name: fullName,
+          email,
+          notification_email: true,
+          notification_sms: false,
+        },
+        { onConflict: "id" }
+      ).then(() => {
+        // After member_profiles is created, trigger the welcome package
+        // edge function so the new member gets a welcome report + email.
+        supabase.functions.invoke("send-welcome-package", {
+          body: { memberId: data.user!.id },
+        }).catch(() => {
+          // Non-critical — edge function may not be deployed yet
+        });
+      });
     }
     // onAuthStateChange will pick up the new session and setUser
   };

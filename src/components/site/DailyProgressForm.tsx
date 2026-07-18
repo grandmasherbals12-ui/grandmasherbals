@@ -225,6 +225,7 @@ export function DailyProgressForm({ onComplete }: DailyProgressFormProps) {
 
       const entryPayload = {
         member_id: user.id,
+        member_name: form.memberName || null,
         entry_date: new Date().toISOString().split("T")[0],
         day1_hour1_notes: form.day1Hour1Notes,
         day1_hour2_notes: form.day1Hour2Notes,

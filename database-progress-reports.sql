@@ -134,27 +134,31 @@ ALTER TABLE message_log ENABLE ROW LEVEL SECURITY;
 
 -- Member can read/write their own profile
 DROP POLICY IF EXISTS "member_profile_select" ON member_profiles;
-CREATE POLICY "member_profile_select" ON member_profiles FOR SELECT USING (auth.uid() = id);
+CREATE POLICY "member_profile_select" ON member_profiles FOR SELECT USING (auth.uid() = id OR (auth.jwt() ->> 'email' = 'admin@gmail.com'));
 
 DROP POLICY IF EXISTS "member_profile_insert" ON member_profiles;
 CREATE POLICY "member_profile_insert" ON member_profiles FOR INSERT WITH CHECK (auth.uid() = id);
 
 DROP POLICY IF EXISTS "member_profile_update" ON member_profiles;
-CREATE POLICY "member_profile_update" ON member_profiles FOR UPDATE USING (auth.uid() = id);
+CREATE POLICY "member_profile_update" ON member_profiles FOR UPDATE USING (auth.uid() = id OR (auth.jwt() ->> 'email' = 'admin@gmail.com'));
 
 -- Member can read/write their own daily entries
 DROP POLICY IF EXISTS "member_entry_select" ON daily_progress_entries;
-CREATE POLICY "member_entry_select" ON daily_progress_entries FOR SELECT USING (auth.uid() = member_id);
+CREATE POLICY "member_entry_select" ON daily_progress_entries FOR SELECT USING (auth.uid() = member_id OR (auth.jwt() ->> 'email' = 'admin@gmail.com'));
 
 DROP POLICY IF EXISTS "member_entry_insert" ON daily_progress_entries;
 CREATE POLICY "member_entry_insert" ON daily_progress_entries FOR INSERT WITH CHECK (auth.uid() = member_id);
 
 DROP POLICY IF EXISTS "member_entry_update" ON daily_progress_entries;
-CREATE POLICY "member_entry_update" ON daily_progress_entries FOR UPDATE USING (auth.uid() = member_id);
+CREATE POLICY "member_entry_update" ON daily_progress_entries FOR UPDATE USING (auth.uid() = member_id OR (auth.jwt() ->> 'email' = 'admin@gmail.com'));
 
 -- Member can view their own reports
 DROP POLICY IF EXISTS "member_report_select" ON progress_reports;
-CREATE POLICY "member_report_select" ON progress_reports FOR SELECT USING (auth.uid() = member_id);
+CREATE POLICY "member_report_select" ON progress_reports FOR SELECT USING (auth.uid() = member_id OR (auth.jwt() ->> 'email' = 'admin@gmail.com'));
+
+-- Message log policies
+DROP POLICY IF EXISTS "member_message_select" ON message_log;
+CREATE POLICY "member_message_select" ON message_log FOR SELECT USING (auth.uid() = member_id OR (auth.jwt() ->> 'email' = 'admin@gmail.com'));
 
 -- Indexes
 CREATE INDEX IF NOT EXISTS idx_daily_entries_member ON daily_progress_entries(member_id);
