@@ -9,7 +9,7 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/lib/supabase";
 import { toast } from "sonner";
 import { LogOut, User, ShoppingBag, Heart, Leaf } from "lucide-react";
-import { useNavigate } from "@tanstack/react-router";
+import { useNavigate, Link } from "@tanstack/react-router";
 import { AuthModal } from "@/components/site/AuthModal";
 
 export const Route = createFileRoute("/account")({
