@@ -1,5 +1,5 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { SiteLayout } from "@/components/site/SiteLayout";
 import { useAuth } from "@/lib/auth-context";
 import { toast } from "sonner";
