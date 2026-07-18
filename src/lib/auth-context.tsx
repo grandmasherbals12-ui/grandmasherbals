@@ -117,15 +117,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           notification_sms: false,
         },
         { onConflict: "id" }
-      ).then(() => {
-        // After member_profiles is created, trigger the welcome package
-        // edge function so the new member gets a welcome report + email.
-        supabase.functions.invoke("send-welcome-package", {
-          body: { memberId: data.user!.id },
-        }).catch(() => {
-          // Non-critical — edge function may not be deployed yet
-        });
-      });
+      );
     }
     // onAuthStateChange will pick up the new session and setUser
   };

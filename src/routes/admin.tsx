@@ -397,6 +397,8 @@ function UsersPanel() {
   const [formula, setFormula] = useState("");
   const [healthNotes, setHealthNotes] = useState("");
   const [savingRecs, setSavingRecs] = useState(false);
+  const [practitionerName, setPractitionerName] = useState("Dr. Travis Williams");
+  const [sendingWelcome, setSendingWelcome] = useState(false);
 
   // Follow Up scheduler states
   const [followupDate, setFollowupDate] = useState("");
@@ -428,6 +430,7 @@ function UsersPanel() {
     setSelectedUser(user);
     setFormula(user.wellness_formula || "");
     setHealthNotes(user.health_notes || "");
+    setPractitionerName(user.practitioner_name || "Dr. Travis Williams");
     setFollowupDate("");
     setFollowupNotes("");
     
@@ -455,6 +458,7 @@ function UsersPanel() {
         .update({
           wellness_formula: formula,
           health_notes: healthNotes,
+          practitioner_name: practitionerName,
           updated_at: new Date().toISOString(),
         })
         .eq("id", selectedUser.id)
@@ -470,6 +474,45 @@ function UsersPanel() {
       toast.error(err.message || "Failed to update recommendations.");
     } finally {
       setSavingRecs(false);
+    }
+  };
+
+  const handleApproveWelcome = async () => {
+    if (!selectedUser) return;
+    setSendingWelcome(true);
+    try {
+      // 1. Update DB profile status
+      const { error: dbErr } = await supabase
+        .from("member_profiles")
+        .update({
+          welcome_approved: true,
+          practitioner_name: practitionerName,
+        })
+        .eq("id", selectedUser.id);
+      if (dbErr) throw dbErr;
+
+      // 2. Invoke Edge Function
+      const { error: functionErr } = await supabase.functions.invoke("send-welcome-package", {
+        body: { memberId: selectedUser.id },
+      });
+      if (functionErr) throw functionErr;
+
+      toast.success("Welcome report approved and released to user!");
+      
+      // Reload user data
+      const { data: updatedProfile } = await supabase
+        .from("member_profiles")
+        .select("*")
+        .eq("id", selectedUser.id)
+        .single();
+      if (updatedProfile) {
+        setSelectedUser(updatedProfile);
+        fetchUsers();
+      }
+    } catch (err: any) {
+      toast.error(err.message || "Failed to release welcome letter.");
+    } finally {
+      setSendingWelcome(false);
     }
   };
 
@@ -605,6 +648,42 @@ function UsersPanel() {
           
           {/* Column 1: Intake Form View */}
           <div className="rounded-2xl border border-border bg-card p-6 shadow-soft space-y-6">
+            {/* Welcome Letter Status & Approval */}
+            <div className="rounded-2xl border border-amber-250 bg-[#faf8f2] p-5 space-y-4 shadow-sm">
+              <h3 className="text-base font-serif font-bold text-olive-900 border-b border-amber-100 pb-2 flex items-center gap-2">
+                <Leaf className="h-4 w-4 text-olive-600 animate-pulse" /> Welcome Report Release Workflow
+              </h3>
+              <div className="flex items-center justify-between gap-4 flex-wrap">
+                <div>
+                  <span className="text-[10px] text-stone-500 block uppercase font-bold tracking-wider">Release State</span>
+                  {selectedUser.welcome_approved ? (
+                    <span className="inline-flex items-center gap-1 mt-1 text-xs font-semibold text-emerald-700 bg-emerald-50 border border-emerald-250 rounded-full px-2.5 py-0.5">
+                      ✓ Released to User Account
+                    </span>
+                  ) : (
+                    <span className="inline-flex items-center gap-1 mt-1 text-xs font-semibold text-amber-700 bg-amber-50 border border-amber-250 rounded-full px-2.5 py-0.5 animate-pulse">
+                      ⧗ Pending Admin Release
+                    </span>
+                  )}
+                </div>
+                {!selectedUser.welcome_approved && (
+                  <Button
+                    onClick={handleApproveWelcome}
+                    disabled={sendingWelcome}
+                    className="bg-olive-600 hover:bg-olive-700 text-white rounded-full px-4 py-2 text-xs font-semibold shadow-sm transition"
+                  >
+                    {sendingWelcome ? (
+                      <>
+                        <Loader2 className="h-3 w-3 animate-spin mr-1.5" /> Releasing...
+                      </>
+                    ) : (
+                      "Release Welcome Report"
+                    )}
+                  </Button>
+                )}
+              </div>
+            </div>
+
             <h3 className="text-lg font-serif font-bold text-olive-800 border-b pb-2 flex items-center gap-2">
               <ClipboardList className="h-5 w-5" /> Submitted Intake Form
             </h3>
@@ -660,6 +739,16 @@ function UsersPanel() {
               </h3>
               
               <form onSubmit={handleSaveRecommendations} className="space-y-4 mt-4">
+                <div>
+                  <Label htmlFor="rec-practitioner">Practitioner / Received By</Label>
+                  <Input
+                    id="rec-practitioner"
+                    value={practitionerName}
+                    onChange={(e) => setPractitionerName(e.target.value)}
+                    placeholder="e.g. Dr. Travis Williams"
+                    className="mt-1"
+                  />
+                </div>
                 <div>
                   <Label htmlFor="rec-formula">Active Wellness Formula</Label>
                   <Input

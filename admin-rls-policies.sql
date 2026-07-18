@@ -70,6 +70,11 @@ CREATE POLICY "admin_consultations_update" ON consultations
   FOR UPDATE TO authenticated
   USING (auth.jwt() ->> 'email' IN ('admin@gmail.com', 'grandmasherbals12@gmail.com'));
 
+DROP POLICY IF EXISTS "admin_consultations_insert" ON consultations;
+CREATE POLICY "admin_consultations_insert" ON consultations
+  FOR INSERT TO authenticated
+  WITH CHECK (auth.jwt() ->> 'email' IN ('admin@gmail.com', 'grandmasherbals12@gmail.com'));
+
 -- 8. Policies for stories
 DROP POLICY IF EXISTS "admin_stories_select" ON stories;
 CREATE POLICY "admin_stories_select" ON stories

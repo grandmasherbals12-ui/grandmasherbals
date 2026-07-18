@@ -70,7 +70,7 @@ serve(async (req) => {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            from: "Dr. Travis Williams <reports@grandmasherbals.com>",
+            from: `${profile.practitioner_name || "Dr. Travis Williams"} <reports@grandmasherbals.com>`,
             to: [profile.email],
             subject: `Welcome to Concierge Wellness Care — ${profile.full_name}`,
             html: welcomeHtml,
@@ -85,7 +85,7 @@ serve(async (req) => {
             message_type: "report_email",
             recipient_email: profile.email,
             subject: `Welcome to Concierge Wellness Care`,
-            body: "Sent Concierge Wellness Welcome Package Email",
+            body: `Sent Concierge Wellness Welcome Package Email from ${profile.practitioner_name || "Dr. Travis Williams"}`,
             status: "sent",
             sent_at: new Date().toISOString(),
           });
@@ -112,7 +112,7 @@ serve(async (req) => {
       try {
         const namePart = (profile.full_name || "").replace(/^(Mr\.|Mrs\.|Ms\.|Dr\.)\s+/, "");
         const firstName = namePart.split(" ")[0];
-        const smsBody = `🌿 Grandma's Herbals\nWelcome to Concierge Wellness Care, ${firstName}!\nWe are honored to support your wellness journey.\nLog in to submit daily reports: ${siteUrl}/membership\n— Dr. Travis Williams`;
+        const smsBody = `🌿 Grandma's Herbals\nWelcome to Concierge Wellness Care, ${firstName}!\nWe are honored to support your wellness journey.\nLog in to submit daily reports: ${siteUrl}/membership\n— ${profile.practitioner_name || "Dr. Travis Williams"}`;
 
         const params = new URLSearchParams({
           To: profile.phone,
@@ -572,7 +572,7 @@ function generateWelcomeHtml(profile: any, relationshipNouns: string): string {
         
         <div class="letter-footer">
           <div class="signature-title">With gratitude and respect,</div>
-          <div class="signature-name">Dr. Travis Williams</div>
+          <div class="signature-name">${profile.practitioner_name || "Dr. Travis Williams"}</div>
           <div class="signature-brand">Grandma's Herbals</div>
         </div>
       </div>
