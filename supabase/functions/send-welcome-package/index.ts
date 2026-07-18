@@ -153,6 +153,21 @@ serve(async (req) => {
     } else {
       smsErr = "Twilio credentials or phone number missing.";
     }
+    // so the report shows up in the Admin Panel -> Progress Reports
+    try {
+      await supabaseClient.from("progress_reports").insert({
+        member_id: memberId,
+        member_name: profile.full_name,
+        member_age: profile.age || null,
+        wellness_formula: profile.wellness_formula || "Bespoke Wellness Compound",
+        report_date: new Date().toISOString().split("T")[0],
+        report_html: welcomeHtml,
+        email_sent_at: emailSent ? new Date().toISOString() : null,
+        sms_sent_at: smsSent ? new Date().toISOString() : null,
+      });
+    } catch (reportErr) {
+      console.error("Error creating progress_reports welcome row:", reportErr);
+    }
 
     return new Response(
       JSON.stringify({
