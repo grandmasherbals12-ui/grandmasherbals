@@ -49,6 +49,7 @@ function AccountPage() {
     country: "",
   });
   const [orders, setOrders] = useState<Order[]>([]);
+  const [memberProfile, setMemberProfile] = useState<any>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
@@ -106,6 +107,13 @@ function AccountPage() {
 
       if (ordersError) throw ordersError;
       setOrders(ordersData || []);
+
+      const { data: memberData } = await supabase
+        .from("member_profiles")
+        .select("welcome_approved, practitioner_name, wellness_formula")
+        .eq("id", user.id)
+        .maybeSingle();
+      if (memberData) setMemberProfile(memberData);
     } catch (error: any) {
       console.error("Error loading user data:", error);
       toast.error("Failed to load your account information.");
@@ -428,7 +436,7 @@ function AccountPage() {
                   <p className="text-4xl font-bold text-olive-600">{orders.length}</p>
                 </div>
 
-                <div className="rounded-[2rem] border border-amber-200 bg-gradient-to-br from-amber-50 to-white p-6 shadow-[0_10px_40px_rgba(217,119,6,0.08)]">
+                <div className="rounded-[2rem] border border-amber-250 bg-gradient-to-br from-amber-50 to-white p-6 shadow-[0_10px_40px_rgba(217,119,6,0.08)]">
                   <div className="flex items-center gap-3 mb-4">
                     <Heart className="w-6 h-6 text-amber-600" />
                     <h3 className="text-lg font-cormorant font-bold text-amber-900">
@@ -440,6 +448,46 @@ function AccountPage() {
                       ? new Date(user.createdAt).toLocaleDateString()
                       : "Recently"}
                   </p>
+                </div>
+
+                {/* My Wellness Portal (Access to Welcome Letter & Progress Reports) */}
+                <div className="rounded-[2rem] border border-amber-200 bg-[#faf8f2] p-6 shadow-[0_10px_40px_rgba(73,88,52,0.06)] space-y-4">
+                  <div className="flex items-center gap-3">
+                    <Leaf className="w-6 h-6 text-olive-700 animate-pulse" />
+                    <h3 className="text-lg font-cormorant font-bold text-olive-900">
+                      My Wellness Portal
+                    </h3>
+                  </div>
+                  
+                  <div className="space-y-4">
+                    <div>
+                      <span className="text-[10px] text-stone-500 uppercase font-bold tracking-wider block">Welcome Letter &amp; Protocol</span>
+                      {memberProfile?.welcome_approved ? (
+                        <div className="mt-1.5 space-y-2">
+                          <span className="inline-flex items-center gap-1 text-xs font-semibold text-emerald-700 bg-emerald-50 border border-emerald-250 rounded-full px-2.5 py-0.5">
+                            ✓ Released by Practitioner
+                          </span>
+                          <Button asChild className="w-full rounded-full bg-olive-600 hover:bg-olive-700 text-white font-semibold text-xs mt-1">
+                            <Link to="/welcome">View Welcome Letter</Link>
+                          </Button>
+                        </div>
+                      ) : (
+                        <div className="mt-1.5">
+                          <span className="inline-flex items-center gap-1 text-xs font-medium text-stone-600 bg-stone-100 border border-stone-200 rounded-full px-2.5 py-0.5 animate-pulse">
+                            🌿 Personalizing Protocol...
+                          </span>
+                          <p className="text-[11px] text-stone-400 mt-2 italic">Will be released by {memberProfile?.practitioner_name || "your practitioner"} soon.</p>
+                        </div>
+                      )}
+                    </div>
+
+                    <div className="border-t border-stone-200 pt-3">
+                      <span className="text-[10px] text-stone-500 uppercase font-bold tracking-wider block">Daily Wellness Journal</span>
+                      <Button asChild variant="outline" className="w-full mt-2 rounded-full border-olive-200 text-olive-700 hover:bg-olive-50 text-xs">
+                        <Link to="/membership">Submit Daily Progress</Link>
+                      </Button>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
