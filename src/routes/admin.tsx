@@ -386,7 +386,7 @@ function Inventory() {
   );
 }
 
-import { Edit, Save, Plus, FileText, Check, Loader2, Calendar as CalendarIcon, Download, Printer } from "lucide-react";
+import { Edit, Save, Plus, FileText, Check, Loader2, Calendar as CalendarIcon, Download, Printer, Leaf } from "lucide-react";
 
 function UsersPanel() {
   const [users, setUsers] = useState<any[]>([]);
